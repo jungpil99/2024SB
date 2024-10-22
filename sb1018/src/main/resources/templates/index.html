@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>top page</title>
+  <meta http-equiv="Content-Type"
+        content="text/html; charset=UTF-8" />
+  <style>
+    h1 { font-size:18pt; font-weight:bold; color:gray; }
+    body { font-size:13pt; color:gray; margin:5px 25px; }
+    tr {margin: 5px;}
+    th {padding: 5px; color: white; background-color: darkgray;}
+    td{padding: 5px; color: black; background-color: #e0e0ff;}
+  </style>
+</head>
+<body>
+<hr />
+<table>
+  <form action="/insert">
+  <tr>
+    <th>사원번호</th>
+    <th>사원명</th>
+    <th>직급</th>
+    <th>상사</th>
+    <th>입사일</th>
+    <th>부서번호</th>
+  </tr>
+<tr th:each="emp : ${emplist}">
+  <td><a th:href="@{/edit/{empno}(empno=${emp.empno})}" th:text="${emp.empno}"></a></td>
+  <td th:text="${emp.ename}"></td>
+  <td th:text="${emp.job}"></td>
+  <td th:text="${emp.mgr}"></td>
+  <td th:text="${#dates.format(emp.hiredate, 'yyyy-MM-dd')}"></td>
+  <td th:text="${emp.deptno}"></td>
+  <td><a th:href="@{/delete/{empno}(empno=${emp.empno})}">삭제</a></td>
+</tr>
+  <tr><td><input type="submit" value="사원추가"></td></tr>
+  </form>
+</table>
+
+</body>
+</html>

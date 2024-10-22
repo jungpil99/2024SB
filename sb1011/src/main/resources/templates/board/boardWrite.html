@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>board</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+	<div class="container">
+	    <h2>게시글 등록</h2>
+	    <form id="frm" name="frm" method="post" action="/board/insertBoard.do" enctype="multipart/form-data">
+	    	<table class="board_detail">
+	    		<tr>
+	    			<td>제목</td>
+	    			<td><input type="text" id="title" name="title"/></td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan="2">
+		    			<textarea id="contents" name="contents"></textarea>
+	    			</td>
+	    		</tr>
+				<tr>
+					<td>첨부파일</td>
+					<td>
+						<button type="button" id="attachFileBtn" class="btn">파일 첨부</button>
+						<input type="file" id="file" name="file" accept="image/*" multiple />
+						<span id="fileName">첨부된 파일 없음</span>
+						<div id="previewContainer" style="margin-top: 10px;"></div>
+						<button type="button" id="cancelFileBtn" class="btn" style="display:none; margin-top: 10px;">취소</button>
+					</td>
+				</tr>
+	    	</table>
+	    	<input type="submit" id="submit" value="저장" class="btn">
+			<a href="#this" id="cancle" class="btn">취소</a>
+	    </form>
+    </div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#attachFileBtn").on("click", function() {
+				$("#file").click(); // 파일 입력 필드 클릭 이벤트 발생
+			});
+			$("#cancle").on("click", function(){
+				location.href = "/board/openBoardList.do";
+			});
+			$("#file").on("change", function(event) {
+				const files = event.target.files; // 선택된 파일 가져오기
+				const fileNames = []; // 파일 이름을 저장할 배열
+				$("#previewContainer").empty(); // 이전 미리보기 초기화
+
+				for (let i = 0; i < files.length; i++) {
+					const file = files[i];
+					fileNames.push(file.name); // 파일 이름 추가
+					const reader = new FileReader(); // FileReader 객체 생성
+					reader.onload = function(e) {
+						// 미리보기 이미지 생성
+						const img = $('<img />', {
+							src: e.target.result,
+							alt: '미리보기',
+							style: 'max-width: 200px; margin-top: 10px;'
+						});
+						$("#previewContainer").append(img); // 미리보기를 컨테이너에 추가
+					};
+					reader.readAsDataURL(file); // 파일을 읽어 데이터 URL로 변환
+				}
+
+				$("#fileName").text(fileNames.join(', ')); // 선택된 파일 이름 표시
+				$("#cancelFileBtn").show(); // 취소 버튼 보이기
+			});
+
+			// 취소 버튼 클릭 시
+			$("#cancelFileBtn").on("click", function() {
+				$("#file").val(''); // 파일 입력 초기화
+				$("#fileName").text("첨부된 파일 없음"); // 파일 이름 초기화
+				$("#previewContainer").empty(); // 미리보기 초기화
+				$(this).hide(); // 취소 버튼 숨기기
+			});
+		})
+	</script>
+</body>
+</html>

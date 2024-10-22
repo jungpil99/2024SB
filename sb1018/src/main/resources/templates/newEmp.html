@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>top page</title>
+  <meta http-equiv="Content-Type"
+        content="text/html; charset=UTF-8" />
+  <style>
+    h1 { font-size:18pt; font-weight:bold; color:gray; }
+    body { font-size:13pt; color:gray; margin:5px 25px; }
+    tr {margin: 5px;}
+    th {padding: 5px; color: white; background-color: darkgray;}
+    td{padding: 5px; color: black; background-color: #e0e0ff;}
+  </style>
+</head>
+<body>
+<hr />
+  <table>
+    <form method="post" action="/insert" th:object="${formEmp}">
+      <tr><td><label for="empno">사원번호</label> </td>
+        <td><input type="text" name="empno" th:value="*{empno}"/></td></tr>
+      <tr><td><label for="ename">사원명</label> </td>
+        <td><input type="text" name="ename" th:value="*{ename}"/></td></tr>
+      <tr><td><label for="job">직급</label> </td>
+        <td><input type="text" name="job" th:value="*{job}"/></td></tr>
+      <tr><td><label for="mgr">상사</label> </td>
+        <td><input type="text" name="mgr" th:value="*{mgr}"/></td></tr>
+      <tr><td><label for="hiredate">입사일</label> </td>
+        <td><input type="date" name="hiredate" th:value="*{hiredate}"/></td></tr>
+      <tr><td><label for="deptno">부서번호</label> </td>
+        <td><input type="text" name="deptno" th:value="*{deptno}"/></td></tr>
+      <tr><td></td><td><input type="submit" /></td></tr>
+    </form>
+  </table>
+</body>
+</html>
