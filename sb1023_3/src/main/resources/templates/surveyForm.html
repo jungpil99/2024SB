@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>설문조사</title>
+</head>
+<body>
+<h2>설문조사</h2>
+<form method="post" th:action="@{/submitSurvey}">
+  <div th:each="q, status : ${questions}">
+    <p>
+      <span th:text="${status.index + 1}">1</span>.
+      <span th:text="${q.title}">질문 제목</span><br/>
+
+    <div th:if="${q.choice}">
+      <div th:each="option : ${q.options}">
+        <label>
+          <input type="radio" th:name="'responses[' + ${status.index} + '].responseValue'" th:value="${option}" />
+          <span th:text="${option}">옵션</span>
+        </label>
+      </div>
+    </div>
+
+    <div th:if="${!q.choice}">
+      <input type="text" th:field="*{responses[status.index].responseValue}" placeholder="응답을 입력하세요" />
+    </div>
+    </p>
+  </div>
+
+  <p>
+    <label>응답자 위치:<br>
+      <input type="text" th:field="*{res.location}" placeholder="위치를 입력하세요" />
+    </label>
+  </p>
+  <p>
+    <label>응답자 나이:<br>
+      <input type="text" th:field="*{res.age}" placeholder="나이를 입력하세요" />
+    </label>
+  </p>
+  <input type="submit" value="전송" />
+</form>
+</body>
+</html>
