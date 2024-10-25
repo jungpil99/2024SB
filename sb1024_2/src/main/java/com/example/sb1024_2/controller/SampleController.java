@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -59,6 +60,15 @@ public class SampleController {
             model.addAttribute("errorMessage", "로그인에 실패하였습니다. 사용자 이름 또는 비밀번호를 확인하세요.");
             return "/sample/login";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session, HttpServletRequest request) {
+        session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/sample/all";
     }
 
 

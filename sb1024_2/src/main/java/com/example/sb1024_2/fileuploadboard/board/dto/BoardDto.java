@@ -1,17 +1,13 @@
-package com.example.sb1024_2.entity;
+package com.example.sb1024_2.fileuploadboard.board.dto;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.List;
 
-//@Entity
 @Data
-public class Board {
-
-//	@Id
-	private Long boardIdx;
+public class BoardDto {
+	
+	private int boardIdx;
 	
 	private String title;
 	
@@ -26,6 +22,6 @@ public class Board {
 	private String updaterId;
 	
 	private String updatedDatetime;
-
-	private List<BoardFile> fileList;
+	
+	private List<BoardFileDto> fileList;
 }
