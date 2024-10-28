@@ -1,5 +1,6 @@
 package com.example.sb1024_2.spring;
 
+
 public class RegisterRequest {
 
 	private String email;
@@ -7,6 +8,18 @@ public class RegisterRequest {
 	private String confirmPassword;
 	private String name;
 
+	private String registerRequest;
+
+	// getter
+	public String getRegisterRequest() {
+		return registerRequest;
+	}
+
+	// setter
+	public void setRegisterRequest(String registerRequest) {
+		this.registerRequest = registerRequest;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -34,6 +47,7 @@ public class RegisterRequest {
 	public String getName() {
 		return name;
 	}
+
 
 	public void setName(String name) {
 		this.name = name;
