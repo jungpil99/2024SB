@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +58,10 @@ public class RegisterController {
 	}
 
 	@PostMapping("/register/step3")
-	public String handleStep3(RegisterRequest regReq, Model model, String name, HttpSession session, BindingResult errors) {
+	public String handleStep3(@Validated RegisterRequest regReq,
+							  BindingResult errors,
+							  Model model, String name,
+							  HttpSession session) {
 //		if (!regReq.getPassword().equals(regReq.getConfirmPassword())) {
 //			model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
 //			return "register/step2"; // 비밀번호 불일치 시 step2로 돌아감
@@ -83,7 +86,7 @@ public class RegisterController {
 //			return "register/step2";
 //		}
 
-		new RegisterRequestValidator().validate(regReq, errors);
+//		new RegisterRequestValidator().validate(regReq, errors);
 		if(errors.hasErrors())
 			return "register/step2";
 
@@ -93,9 +96,9 @@ public class RegisterController {
 			session.invalidate();
 			return "register/step3";
 		} catch (DuplicateMemberException ex) {
-			errors.rejectValue("email", "duplicate");
-//			errors.reject("notMatchingPassword");
-			errors.rejectValue("registerRequest", "notMatchingPassword");
+//			errors.rejectValue("email", "duplicate");
+			errors.reject("notMatchingPassword");
+//			errors.rejectValue("registerRequest", "notMatchingPassword");
 			return "register/step2";
 		}
 	}
@@ -103,6 +106,11 @@ public class RegisterController {
 	@GetMapping("/main")
 	public String main() {
 		return "redirect:/sample/login";
+	}
+
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.addValidators(new RegisterRequestValidator());
 	}
 
 }

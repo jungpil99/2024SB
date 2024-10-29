@@ -6,6 +6,10 @@ import com.example.sb1024_2.fileuploadboard.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,14 +38,29 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@RequestMapping("board/openBoardList.do")
-	public ModelAndView openBoardList() throws Exception{
+	public String openBoardList(Model model, @PageableDefault(page = 0, size = 10)Pageable pageable) throws Exception{
 		log.info("====> openBoardList {}", "테스트");
-		ModelAndView mv = new ModelAndView("board/boardList");
-		
+//		ModelAndView mv = new ModelAndView("board/boardList");
+
 		List<BoardDto> list = boardService.selectBoardList();
-		mv.addObject("list", list);
+		// 현재 페이지의 시작 인덱스를 계산합니다.
+		final int start = (int) pageable.getOffset();
+		// Math.min()을 사용하여 리스트의 크기를 넘지 않도록 보정합니다.
+		final int end = Math.min((start + pageable.getPageSize()), list.size());
+
+		log.info("start: {}, end: {}", start, end);
+		final Page<BoardDto> page = new PageImpl<>(list.subList(start, end), pageable, list.size());
+
+		log.info("총 페이지 수: {}", page.getTotalPages());
+		log.info("전체 개수: {}", page.getTotalElements());
+		log.info("현재 페이지 번호: {}", page.getNumber());
+		log.info("페이지당 데이터 개수: {}", page.getSize());
+		log.info("다음 페이지 존재 여부: {}", page.hasNext());
+		log.info("이전 페이지 존재 여부: {}", page.hasPrevious());
+		log.info("시작페이지(0) 입니까: {}", page.isFirst());
+		model.addAttribute("list", page);
 		
-		return mv;
+		return "/board/boardList";
 	}
 	
 	@RequestMapping("board/openBoardWrite.do")
