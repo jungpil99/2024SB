@@ -12,5 +12,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoggerInterceptor())
                 .addPathPatterns("/view/main/**")
                 .excludePathPatterns("/css/**","/js/**");
+
+        registry.addInterceptor(new AuthCheckInterceptor())
+                .addPathPatterns("/edit/**");
     }
+
 }
