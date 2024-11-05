@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+  <title th:text="#{change.pwd.title}"></title>
+</head>
+<body>
+<div layout:fragment="content">
+<p th:text="#{change.pwd.done}"></p>
+<p>
+  <a th:href="@{/view/main}">
+    [<span th:text="#{go.main}"></span>]
+  </a>
+</p>
+</div>
+</body>
+</html>

@@ -25,6 +25,13 @@
   <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
   </p>
 
+  <p>
+    <label>
+      <span th:text="#{rememberEmail}">Remember Email</span>:
+      <input type="checkbox" th:field="*{rememberEmail}" />
+    </label>
+  </p>
+
   <input type="submit" th:value="#{login.btn}" />
 </form>
 </div>

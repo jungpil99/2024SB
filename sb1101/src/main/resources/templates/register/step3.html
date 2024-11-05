@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{member.register}">회원가입</title>
+</head>
+<body>
+<div layout:fragment="content">
+<p th:text="#{register.done(${registerRequest.name})}">님 회원 가입을 완료했습니다.</p>
+  <p><a th:href="@{/view/main}">[<span th:text="#{go.main}">첫 화면 이동</span>]</a></p>
+</div>
+</body>
+</html>

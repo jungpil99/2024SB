@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.springframework.org/tags/form">
+<head>
+  <title>회원 조회</title>
+</head>
+<body>
+<form th:action="@{/members}" th:object="${cmd}" method="post">
+  <p>
+    <label>from: <input type="date" th:field="*{from}" /></label>
+    <span th:if="${#fields.hasErrors('from')}" th:errors="*{from}"></span>
+    ~
+    <label>to: <input type="date" th:field="*{to}" /></label>
+    <span th:if="${#fields.hasErrors('to')}" th:errors="*{to}"></span>
+    <input type="submit" value="조회">
+  </p>
+</form>
+
+<div th:if="${! #lists.isEmpty(members)}">
+  <table>
+    <tr>
+      <th>아이디</th>
+      <th>이메일</th>
+      <th>이름</th>
+      <th>비밀번호</th>
+      <th>가입일</th>
+    </tr>
+    <tr th:each="mem : ${members}">
+      <td th:text="${mem.id}"></td>
+      <td>
+        <a th:href="@{/members/{id}(id=${mem.id})}">
+          <span th:text="${mem.email}"></span>
+        </a>
+      </td>
+      <td th:text="${mem.name}"></td>
+      <td th:text="${mem.password}"></td>
+      <td th:text="${#temporals.format(mem.regdate, 'yyyy-MM-dd')}"></td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

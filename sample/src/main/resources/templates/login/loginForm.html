@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{login.title}">Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+<body onLoad="javascript:pop()">
+<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+<div class="login">
+<form th:action="@{/login}" th:object="${loginCommand}" method="post">
+  <div th:if="${#fields.hasErrors()}" >
+    <p th:each="error : ${#fields.globalErrors()}" th:text="${error}" class="alert alert-danger"></p>
+  </div>
+
+  <p>
+    <label th:text="#{email}">Email:</label><br>
+    <input type="text" th:field="*{email}" class="form-control" />
+  <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger"></p>
+  </p>
+
+  <p>
+    <label th:text="#{password}">Password:</label><br>
+    <input type="password" th:field="*{password}" class="form-control" />
+  <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger"></p>
+  </p>
+
+  <p>
+    <label>
+      <span th:text="#{rememberEmail}">Remember Email</span>:
+      <input type="checkbox" th:field="*{rememberEmail}" />
+    </label>
+  </p>
+
+  <input type="submit" th:value="#{login.btn}" class="btn btn-primary" />
+</form>
+</div>
+</body>
+</html>

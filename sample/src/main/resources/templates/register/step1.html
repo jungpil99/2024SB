@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{member.register}">회원가입</title>
+    <link rel="stylesheet" href="/css/register.css">
+</head>
+
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+<body onLoad="javascript:pop()">
+<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+
+<div class="register">
+<h2 th:text="#{term}">약관</h2>
+<p><textarea class="terms-textarea" readonly>
+      약관 내용이 여기에 표시됩니다. 사용자가 이 내용을 수정할 수는 없습니다.
+    </textarea></p>
+<form th:action="@{/register/step2}" method="post">
+  <label class="agree">
+    <input type="checkbox" name="agree" value="true" >
+    <span th:text="#{term.agree}" />
+  </label><br>
+  <input type="submit" th:value="#{next.btn}" class="btn btn-primary" />
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{login.title}">Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+<body onLoad="javascript:pop()">
+<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+<div class="login-success">
+<p th:text="#{login.done}">Login completed</p>
+
+<p>
+  <a th:href="@{/}">[<span th:text="#{go.main}">Go to main</span>]</a>
+</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+  <title>로그인</title>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+  <form method="post" th:action="@{/sample/login}">
+    <div class="form-group">
+      <label class="form-label mt-4">로그인</label>
+      <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p> <!-- 여기에서 모델의 오류 메시지를 출력 -->
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" name="username" class="form-control" id="username" required>
+        <label for="username">Username</label>
+      </div>
+      <div class="form-floating mb-4">
+        <input type="password" name="password" class="form-control" id="floatingPassword" required>
+        <label for="floatingPassword">Password</label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">로그인</button>
+    <a th:href="@{/register/step1}" class="btn btn-primary" role="button">회원가입</a>
+  </form>
+
+</div>
+</body>
+</html>

@@ -29,6 +29,7 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
+    @Getter
     @Column
     private LocalDateTime regdate;
 
