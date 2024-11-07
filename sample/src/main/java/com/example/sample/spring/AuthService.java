@@ -20,6 +20,7 @@ public class AuthService {
 		
 		return new AuthInfo(member.getId(),
 				member.getEmail(), 
-				member.getName());
+				member.getName(),
+				member.getRole());
 	}
 }

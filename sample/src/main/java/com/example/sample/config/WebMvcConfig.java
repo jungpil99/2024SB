@@ -15,6 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new AuthCheckInterceptor())
                 .addPathPatterns("/edit/**");
+
     }
 
 }

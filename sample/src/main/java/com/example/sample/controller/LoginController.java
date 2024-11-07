@@ -4,8 +4,10 @@ package com.example.sample.controller;
 import com.example.sample.spring.AuthInfo;
 import com.example.sample.spring.AuthService;
 import com.example.sample.spring.WrongIdPasswordException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/login")
+@Slf4j
 public class LoginController {
 
 	@Autowired
@@ -46,7 +49,7 @@ public class LoginController {
 					loginCommand.getEmail(),
 					loginCommand.getPassword());
 			System.out.println(authInfo.getName());
-			
+
 			session.setAttribute("authInfo", authInfo);
 
 			Cookie rememberCookie =
@@ -54,6 +57,7 @@ public class LoginController {
 			rememberCookie.setPath("/");
 			if(loginCommand.isRememberEmail()){
 				rememberCookie.setMaxAge(60*60*24*30);
+				log.info(authInfo.getRole());
 			}else{
 				rememberCookie.setMaxAge(0);
 			}

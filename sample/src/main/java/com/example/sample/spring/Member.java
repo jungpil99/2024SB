@@ -32,11 +32,23 @@ public class Member {
     @Column
     private LocalDateTime regdate;
 
+    @Column
+    private String role;
+
     public Member(String email, String name, String password, LocalDateTime regdate) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.regdate = regdate;
+
+    }
+
+    public Member(String email, String name, String password, LocalDateTime regdate,String role) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.regdate = regdate;
+        this.role = role;
     }
 
     public void changePassword(String oldPassword, String newPassword) {
