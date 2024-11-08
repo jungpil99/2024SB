@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -102,20 +103,15 @@ public class BoardController {
 //    테이블 보기
     @GetMapping("/boardDetail")
     public String boardDetail(Model model, @RequestParam("boardIdx") Integer boardIdx, HttpSession session,
-                              @PageableDefault(page = 0, size = 1) Pageable pageable) throws Exception{
-        List<Reply> list = replyService.selectReply();
+                              @PageableDefault(page = 0, size = 3) Pageable pageable) throws Exception{
+        Page<Reply> page = replyService.selectReply(pageable); // 페이지에 맞는 댓글만 가져옵니다.
 
-        final int start = (int) pageable.getOffset();
-        final int end = Math.min(start + pageable.getPageSize(), list.size());
-
-        final Page<Reply> page = new PageImpl<>(list.subList(start, end), pageable, list.size());
-
-        model.addAttribute("list", page);
+        model.addAttribute("list", page);  // 페이지 데이터를 전달
 
         AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
         Optional<Board> optionalBoard = boardService.selectBoardDetail(boardIdx);
 
-        List<Reply> reply = replyService.selectReply();
+//        List<Reply> reply = replyService.selectReply(pageable);
 
         if (optionalBoard.isPresent()) {
 
@@ -124,7 +120,7 @@ public class BoardController {
             board.setHitCnt(board.getHitCnt() + 1);
             boardService.updateBoard(board);
 
-            model.addAttribute("reply", reply);
+//            model.addAttribute("reply", reply);
             model.addAttribute("board", board); // Optional을 풀어 Board 객체만 전달
         } else {
             // 게시글을 찾을 수 없는 경우 처리 (예: 오류 페이지 표시)

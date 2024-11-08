@@ -4,6 +4,8 @@ import com.example.sample.reply.entity.Reply;
 import com.example.sample.reply.repository.ReplyRepository;
 import com.example.sample.spring.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,9 +20,13 @@ public class ReplyService {
     @Autowired
     ReplyRepository replyRepository;
 
-    public List<Reply> selectReply(){
-        return replyRepository.findAll();
+    public Page<Reply> selectReply(Pageable pageable) {
+        return replyRepository.findAll(pageable);
     };
+
+    public List<Reply> selectReplyByUserName(String username) {
+        return replyRepository.findByUsername(username);
+    }
 
     public void saveReply(@RequestParam("replyContents") String replyContents,
                           @RequestParam("boardIdx") Integer boardIdx,

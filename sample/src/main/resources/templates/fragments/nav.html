@@ -9,7 +9,7 @@
                 <ul>
                     <li class="material--li"><span class="material-symbols-outlined">account_circle</span>
                     <li th:if="${session.authInfo != null}">
-                        <a href="/#" >내정보</a>
+                        <a href="/user" >내정보</a>
                     </li>
                     <li th:if="${session.authInfo == null}">
                         <a href="/login" >로그인</a>
@@ -20,7 +20,7 @@
                     <li class="material--li" th:if="${session.authInfo != null}" ><span style="color: #9BD2EC;" class="material-symbols-outlined">logout</span>
                     <li th:if="${session.authInfo != null}" ><a href="/logout">로그아웃</a>
                     <li style="margin: 0 15px;" th:if="${session.authInfo != null}">ㅣ
-                    <li><a href="/#">고객센터</a></li>
+                    <li><a href="/question">고객센터</a></li>
                 </ul>
             </div>
 
@@ -32,50 +32,34 @@
                         <a href="#">
                             <span>공지</span>
                         </a>
-                        <ul class="submenu">
-                            <li class="submenu_inner">
-                                <a href="/Notice">공지사항</a>
-                            </li>
-                            <li class="submenu_inner">
-                                <a href="#">이벤트</a>
-                            </li>
+<!--                        <ul class="submenu">-->
 <!--                            <li class="submenu_inner">-->
-<!--                                <a href="#">서브메뉴3</a>-->
+<!--                                <a href="/Notice">공지사항</a>-->
 <!--                            </li>-->
-                        </ul>
+<!--                            <li class="submenu_inner">-->
+<!--                                <a href="#">이벤트</a>-->
+<!--                            </li>-->
+<!--&lt;!&ndash;                            <li class="submenu_inner">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <a href="#">서브메뉴3</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </li>&ndash;&gt;-->
+<!--                        </ul>-->
                     </li>
                     <li class="mainmenu_list_inner">
-                        <a href="#">
-                            <span>여행</span>
+                        <a href="/trip">
+                            <span>국내여행</span>
                         </a>
-                        <ul class="submenu">
-                            <li class="submenu_inner">
-                                <a href="#">국내여행</a>
-                            </li>
-                            <li class="submenu_inner">
-                                <a href="#">해외여행</a>
-                            </li>
-                            <li class="submenu_inner">
-                                <a href="#">테마여행</a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="mainmenu_list_inner">
-                        <a href="#">
-                            <span>맛집</span>
+                        <a href="/transport">
+                            <span>교통</span>
                         </a>
-                        <ul class="submenu">
-                            <li class="submenu_inner">
-                                <a href="#">맛집 소개</a>
-                            </li>
-                            <li class="submenu_inner">
-                                <a href="#">숨은 맛집</a>
-                            </li>
-<!--                            <li class="submenu_inner">-->
-<!--                                <a href="#">서브메뉴3</a>-->
-<!--                            </li>-->
-                        </ul>
                     </li>
+                    <li class="mainmenu_list_inner">
+                        <a href="/stay">
+                            <span>숙박</span>
+                        </a>
+                    </li>
+
                     <li class="mainmenu_list_inner">
                         <a href="/board/boardList">
                             <span>게시판</span>
@@ -87,9 +71,6 @@
                             <li class="submenu_inner">
                                 <a href="#">리뷰 게시판</a>
                             </li>
-<!--                            <li class="submenu_inner">-->
-<!--                                <a href="#">서브메뉴3</a>-->
-<!--                            </li>-->
                         </ul>
                     </li>
                 </ul>

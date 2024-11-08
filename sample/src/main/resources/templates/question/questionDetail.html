@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <link rel="stylesheet" href="/css/boardWrite.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- Popper.js와 Bootstrap 순서로 로드 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body onLoad="javascript:pop()">
+<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+
+<div class="container mt-5">
+  <h3>게시글 상세</h3>
+
+  <!-- 게시글 정보 테이블 -->
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <td>제목</td>
+      <td colspan="4"><input type="text" class="form-control" id="title"  readonly></td>
+    </tr>
+    <tr>
+      <td>작성자</td>
+      <td><input type="text" class="form-control" id="author"  readonly></td>
+      <td>작성일</td>
+      <td><input type="text" class="form-control" id="createdDate" readonly></td>
+    </tr>
+    <tr>
+      <td>내용</td>
+      <td colspan="3"><textarea class="form-control" id="content" rows="5"  readonly></textarea></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- 삭제 및 목록 버튼 -->
+  <div class="d-flex justify-content-between">
+    <a href="/#" class="btn btn-danger">삭제</a>
+    <a href="/#" class="btn btn-secondary">목록</a>
+  </div>
+
+  <!-- 답변 영역 -->
+  <div class="form-group mt-5">
+    <label for="answer">답변</label>
+    <textarea class="form-control" id="answer" rows="5"  readonly></textarea>
+  </div>
+</div>
+
+<div th:replace="/fragments/footer.html :: fragment-footer"></div>
+</body>
+</html>

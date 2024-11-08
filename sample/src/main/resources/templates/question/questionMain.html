@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- Popper.js와 Bootstrap 순서로 로드 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body onLoad="javascript:pop()">
+<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+
+<div class="container mt-5">
+  <h3>글 목록</h3>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th scope="col" width="10%">글번호</th>
+      <th scope="col">제목</th>
+      <th scope="col" width="15%">작성일</th>
+      <th scope="col" width="15%">답변여부</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 예시 데이터 -->
+    <tr>
+      <td>1</td>
+      <td><a href="/questionDetail">게시글 제목 1</a></td>
+      <td>2024-11-08</td>
+      <td>답변 완료</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><a href="/#">게시글 제목 2</a></td>
+      <td>2024-11-07</td>
+      <td>답변 대기</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><a href="/#">게시글 제목 3</a></td>
+      <td>2024-11-06</td>
+      <td>답변 완료</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- 글 작성 버튼 -->
+  <a href="/write" class="btn btn-primary">글 작성</a>
+</div>
+
+<div th:replace="/fragments/footer.html :: fragment-footer"></div>
+</body>
+</html>

@@ -14,7 +14,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/css/**","/js/**");
 
         registry.addInterceptor(new AuthCheckInterceptor())
-                .addPathPatterns("/edit/**");
+                .addPathPatterns("/edit/**")
+                .addPathPatterns("/user/**");
 
     }
 

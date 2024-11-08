@@ -1,5 +1,7 @@
 package com.example.sample.spring;
 
+import java.time.LocalDateTime;
+
 public class AuthInfo {
 	
 	
@@ -32,6 +34,7 @@ public class AuthInfo {
 	}
 
 	public String getRole() { return role; }
+
 	
 	
 	

@@ -135,7 +135,7 @@
 		</form>
 			<hr>
 			<h5>댓글 목록</h5>
-			<div class="reply_contents" th:each="reply : ${reply}">
+			<div class="reply_contents" th:each="reply : ${list.content}">
 			<table>
 				<tr>
 					<td th:text="${reply.username }"></td>
@@ -166,14 +166,11 @@
 			</table>
 			</div>
 		<div th:if="${!list.isEmpty()}">
-			<!-- 전역 변수 선언 -->
-			<nav
-					th:with="pageNumber = ${list.pageable.pageNumber},
-					 pageSize = ${list.pageable.pageSize},totalPages = ${list.totalPages},
-					 startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
-					 tempEndPage = ${startPage + pageSize - 1},endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})"
-					aria-label="Page navigation"
-			>
+			<nav th:with="pageNumber = ${list.pageable.pageNumber},
+            pageSize = ${list.pageable.pageSize}, totalPages = ${list.totalPages},
+            startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
+            tempEndPage = ${startPage + pageSize - 1}, endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})"
+				 aria-label="Page navigation">
 				<ul class="pagination">
 					<!-- 처음으로 이동 -->
 					<li th:classappend="${pageNumber == 0} ? 'disabled'" class="page-item">
@@ -183,30 +180,27 @@
 						</a>
 					</li>
 
-
 					<!-- 이전으로 이동 -->
-					<li th:classappend="${list.first} ? 'disabled'" class="page-item">
-						<a class="page-link" th:href="${list.first} ? '#' : @{/board/boardDetail(page=${pageNumber - 1}, boardIdx=${board.boardIdx})}" aria-label="Previous">
+					<li th:classappend="${pageNumber == 0} ? 'disabled'" class="page-item">
+						<a class="page-link" th:href="${pageNumber == 0} ? '#' : @{/board/boardDetail(page=${pageNumber - 1}, boardIdx=${board.boardIdx})}" aria-label="Previous">
 							<span aria-hidden="true">&lt;</span>
 							<span class="sr-only">Previous</span>
 						</a>
 					</li>
 
-
 					<!-- 특정 페이지로 이동 -->
-					<li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
+					<li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+						th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
 						<a th:text="${page}" class="page-link" th:href="@{/board/boardDetail(page=${page - 1}, boardIdx=${board.boardIdx})}"></a>
 					</li>
 
-
 					<!-- 다음으로 이동 -->
-					<li th:classappend="${list.last} ? 'disabled'" class="page-item">
-						<a class="page-link" th:href="${list.last} ? '#' : @{/board/boardDetail(page=${pageNumber + 1}, boardIdx=${board.boardIdx})}" aria-label="Next">
+					<li th:classappend="${pageNumber == totalPages - 1} ? 'disabled'" class="page-item">
+						<a class="page-link" th:href="${pageNumber == totalPages - 1} ? '#' : @{/board/boardDetail(page=${pageNumber + 1}, boardIdx=${board.boardIdx})}" aria-label="Next">
 							<span aria-hidden="true">&gt;</span>
 							<span class="sr-only">Next</span>
 						</a>
 					</li>
-
 
 					<!-- 마지막으로 이동 -->
 					<li th:classappend="${pageNumber == totalPages - 1} ? 'disabled'" class="page-item">
@@ -217,8 +211,10 @@
 					</li>
 				</ul>
 			</nav>
-		</div> <!-- /container -->
+		</div>
 	</div>
+
+	<div th:replace="/fragments/footer.html :: fragment-footer"></div>
 
 
     <script type="text/javascript">
