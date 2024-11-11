@@ -70,7 +70,15 @@
 	        	</tr>
 	        </tbody>
 	    </table>
-	    <a href="/board/boardWrite" class="btn">글 쓰기</a>
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<!-- 글쓰기 버튼 -->
+		<a href="/board/boardWrite" class="btn btn-outline-primary">글 쓰기</a>
+		<!-- 검색 창 -->
+		<form action="/board/search" method="get" class="form-inline">
+			<input type="text" name="query" class="form-control mr-sm-2" placeholder="검색어를 입력하세요" aria-label="Search" style="margin-top: 23px;"/>
+			<button type="submit" class="btn btn-outline-success">검색</button>
+		</form>
+	</div>
 
 		<!-- 페이징 -->
 		<div th:if="${!list.isEmpty()}">

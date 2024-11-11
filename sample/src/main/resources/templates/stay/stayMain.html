@@ -45,20 +45,20 @@
 <hr>
 
 <div class="container">
-  <form action="#" method="post" class="mb-4">
+  <form th:action="@{stay/staySearch}" method="post" class="mb-4">
     <div class="row">
       <!-- 숙박 유형 선택 -->
       <div class="col-md-2 mb-4">
-        <div class="form-group">
-          <label for="accommodation-select">숙박 유형 선택</label>
-          <select id="accommodation-select" name="accommodation" class="form-control">
-            <option value="all">전체</option>
-            <option value="hotel">호텔</option>
-            <option value="resort">리조트</option>
-            <option value="pension">팬션</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label for="accommodation-select">숙박 유형 선택</label>
+        <select id="accommodation-select" name="accommodation" class="form-control">
+          <option value="all">전체</option>
+          <option value="hotel">호텔</option>
+          <option value="resort">리조트</option>
+          <option value="pension">팬션</option>
+        </select>
       </div>
+    </div>
 
       <!-- 지역 검색 텍스트 필드 -->
       <div class="col-md-8 mb-8">

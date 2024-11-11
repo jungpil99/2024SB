@@ -225,9 +225,7 @@
             });
 
             $("#edit").on("click", function() {
-                var frm = $("#frm")[0];
-                frm.action = "/board/updateBoard";
-                frm.submit();
+                location.href = "/board/boardUpdate"
             });
 
             $("#delete").on("click", function() {

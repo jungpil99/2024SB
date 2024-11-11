@@ -46,13 +46,13 @@
     <!-- 검색창 -->
     <div class="row mb-4">
         <div class="col-md-12">
-            <form action="#" method="post" class="form-inline">
+            <form th:action="@{trip/tripSearch}" method="post" class="form-inline">
                 <div class="form-group w-100">
                     <label for="search-input" class="sr-only">원하는 지역을 입력해주세요</label>
                     <div class="input-group w-100">
-                        <input type="text" id="search-input" class="form-control" placeholder="원하는 지역을 입력해주세요" aria-label="Search" aria-describedby="search-addon">
+                        <input type="text" id="search-input" name="tripSearch" class="form-control" placeholder="원하는 지역을 입력해주세요" aria-label="Search" aria-describedby="search-addon">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="search-button" onclick="searchPackage()">검색</button>
+                            <input class="btn btn-outline-secondary" type="submit" id="search-button" onclick="searchPackage()" value="검색"></input>
                         </div>
                     </div>
                 </div>

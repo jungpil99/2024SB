@@ -11,25 +11,25 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("/trip")
-    public String trip() {
-        return "/trip/tripMain";
-    }
+//    @GetMapping("/trip")
+//    public String trip() {
+//        return "/trip/tripMain";
+//    }
 
     @GetMapping("/tripDetail")
     public String tripDetail() {
         return "/trip/tripDetail";
     }
 
-    @GetMapping("/transport")
-    public String transport() {
-        return "/transport/transportMain";
-    }
+//    @GetMapping("/transport")
+//    public String transport() {
+//        return "/transport/transportMain";
+//    }
 
-    @GetMapping("/stay")
-    public String stay() {
-        return "/stay/stayMain";
-    }
+//    @GetMapping("/stay")
+//    public String stay() {
+//        return "/stay/stayMain";
+//    }
 
 //    @GetMapping("/user")
 //    public String user() {

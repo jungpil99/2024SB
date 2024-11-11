@@ -161,4 +161,9 @@ public class BoardController {
             return "redirect:/board/boardDetail?boardIdx=" + boardIdx;  // 동일한 게시글 상세 화면으로 리디렉션
         }
     }
+
+    @GetMapping("/boardUpdate")
+    public String boardUpdate(){
+        return "board/boardUpdate";
+    }
 }

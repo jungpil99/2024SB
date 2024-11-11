@@ -9,7 +9,7 @@
                 <ul>
                     <li class="material--li"><span class="material-symbols-outlined">account_circle</span>
                     <li th:if="${session.authInfo != null}">
-                        <a href="/user" >내정보</a>
+                        <a th:href="@{/user/userMain}" >내정보</a>
                     </li>
                     <li th:if="${session.authInfo == null}">
                         <a href="/login" >로그인</a>
