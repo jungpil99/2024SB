@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +20,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/login")
 @Slf4j
+@SessionAttributes("authInfo")
 public class LoginController {
 
 	@Autowired
@@ -38,7 +36,7 @@ public class LoginController {
 	}
 	
 	@PostMapping
-	public String submit(LoginCommand loginCommand, Errors errors, HttpSession session,
+	public String submit(LoginCommand loginCommand, Errors errors, Model model,
 						 HttpServletResponse response) {
 		new LoginCommandValidator().validate(loginCommand, errors);
 		if(errors.hasErrors()) {
@@ -50,7 +48,7 @@ public class LoginController {
 					loginCommand.getPassword());
 			System.out.println(authInfo.getName());
 
-			session.setAttribute("authInfo", authInfo);
+			model.addAttribute("authInfo", authInfo);
 
 			Cookie rememberCookie =
 					new Cookie("REMEMBER", loginCommand.getEmail()); //이메일 정보를 꺼내주어서 뷰에 보내주는 부분

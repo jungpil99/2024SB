@@ -7,10 +7,11 @@
                     <img class="logo" alt="" src="/images/logo.png">여행을 떠나요
                 </a>
                 <ul>
-                    <li class="material--li"><span class="material-symbols-outlined">account_circle</span>
-                    <li th:if="${session.authInfo != null}">
+                    <li class="material--li" th:if="${session.authInfo != null}"><span class="material-symbols-outlined">account_circle</span>
+                    <li th:if="${session.authInfo != null}" class="material--li">
                         <a th:href="@{/user/userMain}" >내정보</a>
                     </li>
+                    <li th:if="${session.authInfo == null}" class="material--li"><span class="material-symbols-outlined">login</span>
                     <li th:if="${session.authInfo == null}">
                         <a href="/login" >로그인</a>
                     </li>
@@ -29,8 +30,8 @@
                 <!-- userRole에 따라 메뉴 다르게 표시 -->
                 <ul class="mainmenu_list">
                     <li class="mainmenu_list_inner">
-                        <a href="#">
-                            <span>공지</span>
+                        <a href="/">
+                            <span>홈</span>
                         </a>
 <!--                        <ul class="submenu">-->
 <!--                            <li class="submenu_inner">-->
@@ -66,10 +67,13 @@
                         </a>
                         <ul class="submenu">
                             <li class="submenu_inner">
+                                <a href="/notice">공지 사항</a>
+                            </li>
+                            <li class="submenu_inner">
                                 <a href="/board/boardList">자유 게시판</a>
                             </li>
                             <li class="submenu_inner">
-                                <a href="#">리뷰 게시판</a>
+                                <a href="/review">리뷰 게시판</a>
                             </li>
                         </ul>
                     </li>

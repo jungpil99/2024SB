@@ -35,17 +35,20 @@
       <table class="table table-bordered">
         <thead>
         <tr>
-          <th width="15%">댓글 번호</th>
-          <th>댓글 내용</th>
-          <th width="40%">작성일</th>
+          <th width="15%">글 번호</th>
+          <th>제목</th>
+          <th width="30%">작성일</th>
         </tr>
         </thead>
         <tbody>
+        <tr th:if="${#lists.isEmpty(board)}">
+          <td colspan="3" th:text="'작성된 글이 없습니다'"></td>
+        </tr>
         <!-- 댓글 목록 출력 -->
-        <tr th:each="reply : ${reply}">
-          <td th:text="${reply.replyId}"></td>
-          <td><a th:href="@{/board/boardDetail(boardIdx=${reply.boardIdx})}" th:text="${reply.replyContents}"></a></td>
-          <td th:text="${reply.replyDate}"></td>
+        <tr th:each="board : ${board}">
+          <td th:text="${board.boardIdx}"></td>
+          <td><a th:href="@{/board/boardDetail(boardIdx=${board.boardIdx})}" th:text="${board.title}"></a></td>
+          <td th:text="${board.createdDatetime}"></td>
         </tr>
         </tbody>
       </table>

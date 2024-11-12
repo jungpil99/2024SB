@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>board</title>
+    <link rel="stylesheet" th:href="@{/css/board.css}"/>
+</head>
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+<body onLoad="javascript:pop()">
+<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 d-none d-md-block">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" th:href="@{/notice}">공지사항</a>
+                <a class="list-group-item list-group-item-action" th:href="@{/board/boardList}">자유 게시판</a>
+                <a class="list-group-item list-group-item-action" th:href="@{/review}">리뷰 게시판</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h2>공지 사항 목록</h2>
+            <table class="board_list">
+                <colgroup>
+                    <col width="15%"/>
+                    <col width="*"/>
+                    <col width="15%"/>
+                    <col width="20%"/>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">글번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">조회수</th>
+                    <th scope="col">작성일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 예시 데이터 -->
+                <tr>
+                    <td>1</td>
+                    <td class="title"><a href="/notice/noticeDetail">게시글 제목 예시</a></td>
+                    <td>123</td>
+                    <td>2023-11-11</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="title"><a href="/notice/noticeDetail">다른 게시글 제목</a></td>
+                    <td>98</td>
+                    <td>2023-10-20</td>
+                </tr>
+                <!--        <tr>-->
+                <!--            <td colspan="5">조회된 결과가 없습니다.</td>-->
+                <!--        </tr>-->
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- 글쓰기 버튼 -->
+                <a class="btn btn-outline-primary" href="/notice/noticeWrite">글 쓰기</a>
+
+                <!-- 검색 창 -->
+                <form action="/notice/noticeSearch" class="form-inline" method="post">
+                    <input aria-label="Search" class="form-control mr-sm-2" name="title" placeholder="제목을 입력하세요"
+                           style="margin-top: 23px;" type="text"/>
+                    <button class="btn btn-outline-success" type="submit">검색</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/fragments/footer.html :: fragment-footer"></div>
+</body>
+</html>

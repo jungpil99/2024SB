@@ -55,40 +55,68 @@
         <tbody>
         <!-- 여행지 정보 (서버에서 데이터베이스 정보를 받아와서 표시) -->
         <tr>
-          <td style="width: 30%; padding: 0;">
-            <div class="card">
-              <a th:href="@{/stay/stayDetail}">
-                <img alt="여행지1" class="card-img-top" src="/images/image1.jpg"
-                     style="width: 100%; height: 200px; object-fit: cover; vertical-align: top;">
-              </a>
-            </div>
-          </td>
+          <!--                    <td style="width: 30%; padding: 0;">-->
+          <!--                        <div class="card">-->
+          <!--                                <img alt="여행지1" class="card-img-top" src="/images/image1.jpg"-->
+          <!--                                     style="width: 100%; height: 200px; object-fit: cover; vertical-align: top;">-->
+          <!--                        </div>-->
+          <!--                    </td>-->
           <td>
-            <div class="card-body text-center">
-              <a th:href="@{/stay/stayDetail}">
-                <h5 class="card-title">제주도 패키지</h5>
-                <p class="card-text">아름다운 자연경관과 다양한 체험 활동을 즐길 수 있는 제주도 여행 패키지</p>
-                <p class="card-price"><strong>가격: 500,000원</strong></p>
-              </a>
+            <div class="card-body text-center d-flex align-items-center justify-content-between">
+
+              <div class="mr-3">
+                <i class="fas fa-plane" style="font-size: 24px;"></i> <!-- 비행기 아이콘 -->
+              </div>
+              <!-- 출발 날짜, 돌아오는 날, 가격 표시 -->
+              <div class="mr-3">
+                <p><strong>체크인:</strong> 2024-12-01</p>
+                <p><strong>체크아웃:</strong> 2024-12-07</p>
+              </div>
+
+              <!-- 항공사 정보 -->
+              <div class="mr-3">
+                <p><strong>숙소명:</strong> 대한항공</p>
+                <p><strong>가격:</strong> 500,000원</p>
+              </div>
+
+              <!-- 항공사 링크 버튼 -->
+              <form method="get" action="https://www.koreanair.com">
+                <button type="submit" class="btn btn-info">사이트</button>
+              </form>
             </div>
           </td>
         </tr>
         <tr>
-          <td style="width: 30%; padding: 0;">
-            <div class="card">
-              <a th:href="@{/stay/stayDetail}">
-                <img alt="여행지2" class="card-img-top" src="/images/image2.jpg"
-                     style="width: 100%; height: 200px; object-fit: cover; vertical-align: top;">
-              </a>
-            </div>
-          </td>
+          <!--                    <td style="width: 30%; padding: 0;">-->
+          <!--                        <div class="card">-->
+          <!--                            <a th:href="@{/tripDetail}">-->
+          <!--                                <img alt="여행지2" class="card-img-top" src="/images/image2.jpg"-->
+          <!--                                     style="width: 100%; height: 200px; object-fit: cover; vertical-align: top;">-->
+          <!--                            </a>-->
+          <!--                        </div>-->
+          <!--                    </td>-->
           <td>
-            <div class="card-body text-center">
-              <a th:href="@{/stay/stayDetail}">
-                <h5 class="card-title">서울 투어</h5>
-                <p class="card-text">서울의 유명한 명소를 둘러보는 투어 패키지</p>
-                <p class="card-price"><strong>가격: 300,000원</strong></p>
-              </a>
+            <div class="card-body text-center d-flex align-items-center justify-content-between">
+
+              <div class="mr-3">
+                <i class="fas fa-train" style="font-size: 24px;"></i> <!-- 기차 아이콘 -->
+              </div>
+              <!-- 출발 날짜, 돌아오는 날, 가격 표시 -->
+              <div class="mr-3">
+                <p><strong>출발일:</strong> 2024-12-01</p>
+                <p><strong>돌아오는 날:</strong> 2024-12-07</p>
+              </div>
+
+              <!-- 교통수단 정보 -->
+              <div class="mr-3">
+                <p><strong>교통수단:</strong> KTX</p>
+                <p><strong>가격:</strong> 150,000원</p>
+              </div>
+
+              <!-- KTX 링크 버튼 -->
+              <form method="get" action="https://www.korail.com">
+                <button type="submit" class="btn btn-info">사이트</button>
+              </form>
             </div>
           </td>
         </tr>

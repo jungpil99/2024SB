@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <meta charset="UTF-8">
+  <title>board</title>
+  <link rel="stylesheet" th:href="@{/css/board.css}"/>
+</head>
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+<body onLoad="javascript:pop()">
+<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+
+<div class="container">
+
+  <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorModal" role="dialog"
+       tabindex="-1" th:if="${errorMessage != null}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="errorModalLabel">알림</h5>
+          <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p th:text="${errorMessage}"></p> <!-- 에러 메시지 표시 -->
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" href="/login">닫기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      if ('${errorMessage}' != '') {
+        $('#errorModal').modal('show');
+      }
+    });
+  </script>
+
+  <div class="row">
+    <div class="col-md-3 d-none d-md-block">
+      <div class="list-group">
+        <a class="list-group-item list-group-item-action" th:href="@{/notice}">공지사항</a>
+        <a class="list-group-item list-group-item-action" th:href="@{/board/boardList}">자유 게시판</a>
+        <a class="list-group-item list-group-item-action" th:href="@{/review}">리뷰 게시판</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <h2>공지 사항 목록</h2>
+      <table class="board_list">
+        <colgroup>
+          <col width="15%"/>
+          <col width="*"/>
+          <col width="15%"/>
+          <col width="15%"/>
+        </colgroup>
+        <thead>
+        <tr>
+          <th scope="col">글번호</th>
+          <th scope="col">제목</th>
+          <th scope="col">작성자</th>
+          <th scope="col">조회수</th>
+          <th scope="col">작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="list : ${list}" th:if="${#lists.size(list)} > 0">
+          <td th:text="${list.reviewId}"></td>
+          <td class="title"><a href="/review/reviewDetail?reviewId=" th:attrappend="href=${list.reviewId}">
+            <span class="title-text" th:text="${list.title}"></span>
+          </a></td>
+          <td th:text="${list.username}"></td>
+          <td th:text="${list.hitCnt}"></td>
+          <td th:text="${list.createdDatetime}"></td>
+          <!--                    <td th:text="${list.replyCnt}"></td>-->
+        </tr>
+        <tr th:unless="${list != null and not #lists.isEmpty(list)}">
+          <td colspan="4">조회된 결과가 없습니다.</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- 글쓰기 버튼 -->
+        <a class="btn btn-outline-primary" href="/review/reviewWrite">글 쓰기</a>
+
+        <!-- 검색 창 -->
+        <form action="/review/reviewSearch" class="form-inline" method="post">
+          <input aria-label="Search" class="form-control mr-sm-2" name="title" placeholder="제목을 입력하세요"
+                 style="margin-top: 23px;" type="text"/>
+          <button class="btn btn-outline-success" type="submit">검색</button>
+        </form>
+      </div>
+
+      <div th:if="${!list.isEmpty()}">
+        <!-- 전역 변수 선언 -->
+        <nav
+                aria-label="Page navigation"
+                th:with="pageNumber = ${list.pageable.pageNumber}, pageSize = ${list.pageable.pageSize},totalPages = ${list.totalPages},startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},tempEndPage = ${startPage + pageSize - 1},endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})"
+        >
+          <ul class="pagination">
+            <!-- 처음으로 이동 -->
+            <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
+              <a class="page-link" th:href="@{/review/reviewList(page=0)}">
+                <span>&laquo;</span>
+                <span class="sr-only">First</span>
+              </a>
+            </li>
+
+
+            <!-- 이전으로 이동 -->
+            <li class="page-item" th:classappend="${list.first} ? 'disabled'">
+              <a aria-label="Previous" class="page-link"
+                 th:href="${list.first} ? '#' : @{/review/reviewList(page=${pageNumber - 1})}">
+                <span aria-hidden="true">&lt;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+
+
+            <!-- 특정 페이지로 이동 -->
+            <li class="page-item"
+                th:classappend="${page == pageNumber + 1} ? 'active'"
+                th:each="page: ${#numbers.sequence(startPage, endPage)}">
+              <a class="page-link" th:href="@{/review/reviewList(page=${page - 1})}" th:text="${page}"></a>
+            </li>
+
+
+            <!-- 다음으로 이동 -->
+            <li class="page-item" th:classappend="${list.last} ? 'disabled'">
+              <a aria-label="Next" class="page-link"
+                 th:href="${list.last} ? '#' : @{/review/reviewList(page=${pageNumber + 1})}">
+                <span aria-hidden="true">&gt;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+
+
+            <!-- 마지막으로 이동 -->
+            <li class="page-item" th:classappend="${pageNumber == totalPages - 1} ? 'disabled'">
+              <a class="page-link" th:href="@{/review/reviewList(page=${totalPages - 1})}">
+                <span>&raquo;</span>
+                <span class="sr-only">Last</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div> <!-- /container -->
+    </div>
+  </div>
+</div>
+
+<div th:replace="/fragments/footer.html :: fragment-footer"></div>
+</body>
+</html>

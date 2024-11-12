@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -40,16 +42,21 @@ public class BoardController {
     ReplyService replyService;
 
 
+
 //    게시판 조회
     @GetMapping("/boardList")
-    public String boardList(Model model, @PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
+    public String boardList(Model model, @RequestParam(value = "query", required = false) String query,@PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
         log.info("====> openBoardList {}", "테스트");
 
-        List<Board> list = boardService.selectBoardList();
+        List<Board> list;
 
-//        if (list == null) {
-//            list = List.of();  // 빈 리스트를 할당
-//        }
+        if (query != null && !query.isEmpty()) {
+            // 제목으로 검색된 게시글 리스트 가져오기
+            list = boardService.searchBoards(query);  // searchBoards 메소드에서 제목으로 검색
+        } else {
+            // 전체 게시글 리스트 가져오기
+            list = boardService.selectBoardList();  // 전체 리스트를 가져오는 메소드
+        }
 
         list.sort(Comparator.comparing(Board::getBoardIdx).reversed());
 
@@ -160,6 +167,24 @@ public class BoardController {
             redirectAttributes.addFlashAttribute("errorMessages", "작성자가 아니므로 삭제할 수 없습니다.");
             return "redirect:/board/boardDetail?boardIdx=" + boardIdx;  // 동일한 게시글 상세 화면으로 리디렉션
         }
+    }
+
+    @GetMapping("/boardSearch")
+    public String boardSearch(@RequestParam("query") String title, Model model, @PageableDefault(page = 0, size = 10) Pageable pageable) throws UnsupportedEncodingException {
+        String encodedTitle = URLEncoder.encode(title, "UTF-8");
+
+        List<Board> list = repository.findByTitleContaining(title);
+
+        list.sort(Comparator.comparing(Board::getBoardIdx).reversed());
+
+        final int start = (int) pageable.getOffset();
+        final int end = Math.min(start + pageable.getPageSize(), list.size());
+
+        final Page<Board> page = new PageImpl<>(list.subList(start, end), pageable, list.size());
+
+        model.addAttribute("list", page);
+
+        return "redirect:/board/boardList?query=" + encodedTitle;
     }
 
     @GetMapping("/boardUpdate")

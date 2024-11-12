@@ -23,6 +23,10 @@ public class BoardService {
         return repository.findAll(Sort.by(Sort.Order.desc("boardIdx")));
     }
 
+    public List<Board> selectListUserName(String username){
+        return repository.findByUsername(username);
+    }
+
     public void insertBoard(HttpSession session,
                             @RequestParam("title") String title,
                             @RequestParam("contents") String contents){
@@ -49,4 +53,8 @@ public class BoardService {
     }
 
     public void updateBoard(Board board){repository.save(board);}
+
+    public List<Board> searchBoards(String title) {
+        return repository.findByTitleContaining(title);
+    }
 }

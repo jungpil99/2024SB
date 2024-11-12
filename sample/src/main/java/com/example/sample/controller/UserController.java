@@ -1,5 +1,8 @@
 package com.example.sample.controller;
 
+import com.example.sample.Board.entity.Board;
+import com.example.sample.Board.repository.BoardRepository;
+import com.example.sample.Board.service.BoardService;
 import com.example.sample.reply.entity.Reply;
 import com.example.sample.reply.service.ReplyService;
 import com.example.sample.repository.MemberRepository;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -28,9 +32,12 @@ public class UserController {
     @Autowired
     ReplyService replyService;
 
+    @Autowired
+    BoardService boardService;
+
     @GetMapping("/userMain")
-    public String user(HttpSession session, Model model) {
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+    public String user(@SessionAttribute("authInfo") AuthInfo authInfo, Model model) {
+//        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 
         if (authInfo != null) {
             model.addAttribute("id", authInfo.getId());
@@ -42,8 +49,8 @@ public class UserController {
     }
 
     @GetMapping("/userList")
-    public String userList(HttpSession session, Model model) {
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+    public String userList(@SessionAttribute("authInfo") AuthInfo authInfo, Model model) {
+//        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
         List<Member> members = memberRepository.findAll();
 
         if (authInfo != null) {
@@ -54,8 +61,8 @@ public class UserController {
     }
 
     @GetMapping("/userReply")
-    public String userReply(HttpSession session, Model model) {
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+    public String userReply(@SessionAttribute("authInfo") AuthInfo authInfo, Model model) {
+//        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 
         if (authInfo != null) {
             List<Reply> reply = replyService.selectReplyByUserName(authInfo.getName());
@@ -67,8 +74,19 @@ public class UserController {
         return "/user/userReply";
     }
 
+    @GetMapping("/userBoard")
+    public String userBoard(@SessionAttribute("authInfo") AuthInfo authInfo, Model model) {
+
+        if (authInfo != null) {
+            List<Board> board = boardService.selectListUserName(authInfo.getName());
+            model.addAttribute("board", board);
+        }
+
+        return "/user/userBoard";
+    }
+
     @GetMapping("/userDelete")
-    public String userDelete(HttpSession session, Model model) {
+    public String userDelete(@SessionAttribute("authInfo") AuthInfo authInfo, Model model) {
 
         return "/user/userDelete";
     }
