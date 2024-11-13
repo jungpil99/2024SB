@@ -1,8 +1,9 @@
-package com.example.sample.review.sevice;
+package com.example.sample.notice.service;
 
 import com.example.sample.Board.entity.Board;
+import com.example.sample.notice.entity.Notice;
+import com.example.sample.notice.repository.NoticeRepository;
 import com.example.sample.review.entity.Review;
-import com.example.sample.review.repository.ReviewRepository;
 import com.example.sample.spring.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -15,13 +16,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ReviewService {
+public class NoticeService {
 
     @Autowired
-    ReviewRepository reviewRepository;
+    NoticeRepository noticeRepository;
 
-    public List<Review> selectReviewList(){
-        return reviewRepository.findAll(Sort.by(Sort.Order.desc("reviewId")));
+    public List<Notice> selectNoticeList() {
+        return noticeRepository.findAll(Sort.by(Sort.Order.desc("noticeId")));
+    }
+
+    public List<Notice> searchBoards(String title) {
+        return noticeRepository.findByTitleContaining(title);
     }
 
     public void insertBoard(HttpSession session,
@@ -29,7 +34,7 @@ public class ReviewService {
                             @RequestParam("contents") String contents){
         AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 
-        Review review = Review.builder()
+        Notice notice = Notice.builder()
                 .title(title)
                 .createdDatetime(LocalDateTime.now().toString().substring(0, 10))
                 .contents(contents)
@@ -37,22 +42,14 @@ public class ReviewService {
                 .hitCnt(0)
                 .username(authInfo.getName())
                 .build();
-        reviewRepository.save(review);
+        noticeRepository.save(notice);
     }
 
-    public Optional<Review> selectReviewDetail(Integer reviewId){
-        return reviewRepository.findById(reviewId);
+    public Optional<Notice> selectBoardDetail(Integer noticeId){
+        return noticeRepository.findById(noticeId);
     }
 
-    public void updateReview(Review review){
-        reviewRepository.save(review);
-    }
-
-    public List<Review> selectListTitle(String title){
-        return reviewRepository.findByTitleContaining(title);
-    }
-
-    public void deleteReview(Integer reviewId){
-        reviewRepository.deleteById(reviewId);
+    public void updateNotice(Notice notice){
+        noticeRepository.save(notice);
     }
 }

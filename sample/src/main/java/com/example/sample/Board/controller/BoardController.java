@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -74,6 +75,7 @@ public class BoardController {
         log.info("이전 페이지 존재 여부: {}", page.hasPrevious());
         log.info("시작페이지(0) 입니까: {}", page.isFirst());
         model.addAttribute("list", page);
+        model.addAttribute("query", query);
 
         return "/board/boardList";
     }
@@ -183,12 +185,46 @@ public class BoardController {
         final Page<Board> page = new PageImpl<>(list.subList(start, end), pageable, list.size());
 
         model.addAttribute("list", page);
+        model.addAttribute("query", title);
 
         return "redirect:/board/boardList?query=" + encodedTitle;
     }
 
     @GetMapping("/boardUpdate")
-    public String boardUpdate(){
-        return "board/boardUpdate";
+    public String boardUpdate(Model model, HttpSession session, @RequestParam("boardIdx") Integer boardIdx, RedirectAttributes redirectAttributes) throws Exception{
+        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+
+        Optional<Board> optionalBoard = boardService.selectBoardDetail(boardIdx);
+
+        Board board = optionalBoard.get();
+
+
+        if(authInfo != null && authInfo.getName().equals(board.getUsername())) {
+            model.addAttribute("board", board);
+            return "board/boardUpdate";
+        }else{
+            redirectAttributes.addFlashAttribute("errorMessages", "권한이 없습니다");
+            return "redirect:/board/boardDetail?boardIdx=" + boardIdx;
+        }
+
+    }
+
+    @PostMapping("/updateBoard")
+    public String Update(@RequestParam("boardIdx") Integer boardIdx,
+                         @RequestParam("title") String title,
+                         @RequestParam("contents") String contents,
+                         HttpSession session){
+
+        Optional<Board> optionalBoard = boardService.selectBoardDetail(boardIdx);
+
+        if(optionalBoard.isPresent()) {
+            Board board = optionalBoard.get();
+            board.setTitle(title);
+            board.setContents(contents);
+            board.setUpdatedDatetime(LocalDateTime.now().toString().substring(0,10));
+            boardService.updateBoard(board);
+        }
+
+        return "redirect:/board/boardDetail?boardIdx=" + boardIdx;
     }
 }

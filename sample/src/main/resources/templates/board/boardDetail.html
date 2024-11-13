@@ -225,7 +225,8 @@
             });
 
             $("#edit").on("click", function() {
-                location.href = "/board/boardUpdate"
+				var boardIdx = $("#boardIdx").val();
+				location.href = "/board/boardUpdate?boardIdx=" + boardIdx;
             });
 
             $("#delete").on("click", function() {

@@ -33,26 +33,29 @@
       <tbody>
       <tr>
         <th scope="row">글 번호</th>
-        <td>1</td>
+        <td th:text="${notice.noticeId }"></td>
         <th scope="row">조회수</th>
-        <td>100</td>
+        <td th:text="${notice.hitCnt }"></td>
       </tr>
       <tr>
         <th scope="row">작성자</th>
-        <td>홍길동</td>
+        <td th:text="${notice.username }"></td>
         <th scope="row">작성일</th>
-        <td>2024-11-12</td>
+        <td th:text="${notice.createdDatetime }"></td>
       </tr>
+      <tr>
       <tr>
         <th scope="row">제목</th>
-        <td colspan="3">게시글 제목</td>
+        <td colspan="3" th:text="${notice.title}"></td>
       </tr>
       <tr>
-        <td colspan="4" class="view_text">게시글 내용</td>
+        <td colspan="4" class="view_text"  th:text="${notice.contents }">
+          <!--						<textarea title="내용" id="contents" name="contents" th:text="${board.contents }"  readonly ></textarea>-->
+        </td>
       </tr>
       </tbody>
     </table>
-    <input type="hidden" id="boardIdx" name="boardIdx" value="1">
+    <input type="hidden" id="noticeId" name="noticeId" th:value="${notice.noticeId }">
   </form>
 
   <!--		<div class="file_list">-->

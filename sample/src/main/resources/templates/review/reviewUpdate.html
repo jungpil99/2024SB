@@ -21,19 +21,20 @@
 
 <div class="container" >
     <h2>게시글 등록</h2>
-    <form id="frm" name="frm" method="post" th:action="@{/board/updateBoard}" enctype="multipart/form-data">
+    <form id="frm" name="frm" method="post" th:action="@{/review/updateReview}" enctype="multipart/form-data">
+        <input type="hidden" id="reviewId" name="reviewId" th:value="${review.reviewId}">
         <table class="board_detail">
             <tr>
                 <td id="title">제목</td>
-                <td><input type="text" id="title" name="title" /></td>
+                <td><input type="text" id="title" name="title" th:value="${review.title}"/></td>
             </tr>
             <tr>
                 <td id="name">작성자</td>
-                <td><input type="text" id="authorName" name="authorName" th:value="${authorName}" readonly="readonly"/></td>
+                <td><input type="text" id="authorName" name="authorName" th:value="${review.username}" readonly="readonly"/></td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <textarea id="contents" name="contents"></textarea>
+                    <textarea id="contents" name="contents" th:text="${review.contents}"></textarea>
                 </td>
             </tr>
         </table>

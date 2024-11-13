@@ -45,9 +45,9 @@
   <div class="row">
     <div class="col-md-3 d-none d-md-block">
       <div class="list-group">
-        <a class="list-group-item list-group-item-action" th:href="@{/notice}">공지사항</a>
+        <a class="list-group-item list-group-item-action" th:href="@{/notice/noticeList}">공지사항</a>
         <a class="list-group-item list-group-item-action" th:href="@{/board/boardList}">자유 게시판</a>
-        <a class="list-group-item list-group-item-action" th:href="@{/review}">리뷰 게시판</a>
+        <a class="list-group-item list-group-item-action" th:href="@{/review/reviewList}">리뷰 게시판</a>
       </div>
     </div>
     <div class="col-md-9">
@@ -90,8 +90,8 @@
         <a class="btn btn-outline-primary" href="/review/reviewWrite">글 쓰기</a>
 
         <!-- 검색 창 -->
-        <form action="/review/reviewSearch" class="form-inline" method="post">
-          <input aria-label="Search" class="form-control mr-sm-2" name="title" placeholder="제목을 입력하세요"
+        <form th:action="@{/review/reviewSearch}" class="form-inline" method="get">
+          <input aria-label="Search" class="form-control mr-sm-2" name="query" placeholder="제목을 입력하세요"
                  style="margin-top: 23px;" type="text"/>
           <button class="btn btn-outline-success" type="submit">검색</button>
         </form>

@@ -19,6 +19,33 @@
 <div th:replace="/fragments/nav.html :: fragment-nav"></div>
 <div th:replace="/fragments/header.html :: fragment-header"></div>
 
+<div th:if="${errorMessages != null}" class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLabel">알림</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p th:text="${errorMessages}"></p> <!-- 에러 메시지 표시 -->
+      </div>
+      <div class="modal-footer">
+        <a href="/review/reviewList" class="btn btn-secondary">닫기</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    if ('${errorMessages}' != '') {
+      $('#errorModal').modal('show');
+    }
+  });
+</script>
+
 <div class="container">
   <h2>게시글 상세 화면</h2>
   <form id="frm" method="post">
@@ -81,23 +108,24 @@
   $(document).ready(function() {
 
     $("#list").on("click", function() {
-      location.href = "/review";
+      location.href = "/review/reviewList";
     });
 
     $("#edit").on("click", function() {
-      location.href = "/review/reviewUpdate"
+      var reviewId = $("#reviewId").val();
+      location.href = "/review/reviewUpdate?reviewId=" + reviewId;
     });
 
     $("#delete").on("click", function() {
 
       // 작성자와 같으면 삭제 진행
       var frm = $("#frm")[0];
-      frm.action = "/board/deleteBoard";
-      var boardIdx = $("#boardIdx").val(); // boardIdx 값을 가져옴
+      frm.action = "/review/deleteReview";
+      var boardIdx = $("#reviewId").val(); // boardIdx 값을 가져옴
       $('<input>').attr({
         type: 'hidden',
-        name: 'boardIdx', // boardIdx를 name으로 지정
-        value: boardIdx  // boardIdx 값 넣기
+        name: 'reviewId', // boardIdx를 name으로 지정
+        value: reviewId  // boardIdx 값 넣기
       }).appendTo(frm);
       frm.submit();
     });
