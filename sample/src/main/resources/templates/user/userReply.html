@@ -21,7 +21,7 @@
     <!-- 왼쪽 메뉴 -->
     <div class="col-md-3">
       <div class="list-group">
-        <a th:href="@{userList}" class="list-group-item list-group-item-action">회원 관리</a>
+        <a class="list-group-item list-group-item-action" th:if="${isAdmin == true}" th:href="@{userList}">회원 관리</a>
         <a th:href="@{userDelete}" class="list-group-item list-group-item-action">회원 탈퇴</a>
         <a th:href="@{userBoard}" class="list-group-item list-group-item-action">게시물 관리</a>
         <a th:href="@{userReply}" class="list-group-item list-group-item-action">댓글 관리</a>
@@ -37,10 +37,13 @@
         <tr>
           <th width="15%">댓글 번호</th>
           <th>댓글 내용</th>
-          <th width="40%">작성일</th>
+          <th width="30%">작성일</th>
         </tr>
         </thead>
         <tbody>
+        <tr th:unless="${reply != null and not #lists.isEmpty(reply)}">
+          <td colspan="3">작성한 댓글이 없습니다.</td>
+        </tr>
         <!-- 댓글 목록 출력 -->
         <tr th:each="reply : ${reply}">
           <td th:text="${reply.replyId}"></td>

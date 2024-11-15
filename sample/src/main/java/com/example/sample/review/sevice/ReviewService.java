@@ -55,4 +55,12 @@ public class ReviewService {
     public void deleteReview(Integer reviewId){
         reviewRepository.deleteById(reviewId);
     }
+
+    public void deleteByUsername(String username){
+        reviewRepository.deleteByUsername(username);
+    }
+
+    public List<Review> selectListUserName(String username){
+        return reviewRepository.findByUsername(username);
+    }
 }

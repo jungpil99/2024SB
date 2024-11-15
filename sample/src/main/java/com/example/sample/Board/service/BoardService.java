@@ -52,6 +52,10 @@ public class BoardService {
         repository.deleteById(boardIdx);
     }
 
+    public void deleteBoardByUsername(String username){
+        repository.deleteByUsername(username);
+    }
+
     public void updateBoard(Board board){repository.save(board);}
 
     public List<Board> searchBoards(String title) {

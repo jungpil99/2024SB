@@ -2,58 +2,67 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-  <!-- Popper.js와 Bootstrap 순서로 로드 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Popper.js와 Bootstrap 순서로 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-  <meta charset="UTF-8">
-  <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body onLoad="javascript:pop()">
 <div th:replace="/fragments/nav.html :: fragment-nav"></div>
 <div th:replace="/fragments/header.html :: fragment-header"></div>
 
 <div class="container mt-5">
-  <div class="row">
-    <!-- 왼쪽 메뉴 -->
-    <div class="col-md-3">
-      <div class="list-group">
-        <a th:href="@{userList}" class="list-group-item list-group-item-action">회원 관리</a>
-        <a th:href="@{userDelete}" class="list-group-item list-group-item-action">회원 탈퇴</a>
-        <a th:href="@{userBoard}" class="list-group-item list-group-item-action">게시물 관리</a>
-        <a th:href="@{userReply}" class="list-group-item list-group-item-action">댓글 관리</a>
-      </div>
-    </div>
+    <div class="row">
+        <!-- 왼쪽 메뉴 -->
+        <div class="col-md-3">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" th:if="${isAdmin == true}" th:href="@{userList}">회원 관리</a>
+                <a class="list-group-item list-group-item-action" th:href="@{userDelete}">회원 탈퇴</a>
+                <a class="list-group-item list-group-item-action" th:href="@{userBoard}">게시물 관리</a>
+                <a class="list-group-item list-group-item-action" th:href="@{userReply}">댓글 관리</a>
+            </div>
+        </div>
 
-    <!-- 오른쪽 댓글 리스트 -->
-    <div class="col-md-9">
-      <h3>댓글 리스트</h3>
-      <!-- 댓글 리스트 테이블 -->
-      <table class="table table-bordered">
-        <thead>
-        <tr>
-          <th width="15%">글 번호</th>
-          <th>제목</th>
-          <th width="30%">작성일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:if="${#lists.isEmpty(board)}">
-          <td colspan="3" th:text="'작성된 글이 없습니다'"></td>
-        </tr>
-        <!-- 댓글 목록 출력 -->
-        <tr th:each="board : ${board}">
-          <td th:text="${board.boardIdx}"></td>
-          <td><a th:href="@{/board/boardDetail(boardIdx=${board.boardIdx})}" th:text="${board.title}"></a></td>
-          <td th:text="${board.createdDatetime}"></td>
-        </tr>
-        </tbody>
-      </table>
+        <!-- 오른쪽 댓글 리스트 -->
+        <div class="col-md-9">
+            <h3>댓글 리스트</h3>
+            <!-- 댓글 리스트 테이블 -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th width="15%">글 번호</th>
+                    <th>제목</th>
+                    <th width="30%">작성일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:unless="${posts != null and not #lists.isEmpty(posts)}">
+                    <td colspan="3">작성한 게시물이 없습니다.</td>
+                </tr>
+                <!-- 댓글 목록 출력 -->
+                <tr th:each="post : ${posts}">
+                    <td th:text="${post.postId}"></td>
+                    <td>
+                        <div th:switch="${post.type}">
+                            <a th:case="'board'" th:href="@{/board/boardDetail(boardIdx=${post.postId})}"
+                               th:text="${post.title}"></a>
+                            <a th:case="'notice'" th:href="@{/notice/noticeDetail(noticeId=${post.postId})}"
+                               th:text="${post.title}"></a>
+                            <a th:case="'review'" th:href="@{/review/reviewDetail(reviewId=${post.postId})}"
+                               th:text="${post.title}"></a>
+                        </div>
+                    </td>
+                    <td th:text="${post.createdDateTime}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
 
 

@@ -20,7 +20,7 @@
     <!-- 왼쪽 메뉴 -->
     <div class="col-md-3">
       <div class="list-group">
-        <a th:href="@{userList}" class="list-group-item list-group-item-action">회원 관리</a>
+        <a class="list-group-item list-group-item-action" th:if="${isAdmin == true}" th:href="@{userList}">회원 관리</a>
         <a th:href="@{userDelete}" class="list-group-item list-group-item-action">회원 탈퇴</a>
         <a th:href="@{userBoard}" class="list-group-item list-group-item-action">게시물 관리</a>
         <a th:href="@{userReply}" class="list-group-item list-group-item-action">댓글 관리</a>

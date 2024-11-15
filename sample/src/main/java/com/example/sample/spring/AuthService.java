@@ -21,6 +21,7 @@ public class AuthService {
 		return new AuthInfo(member.getId(),
 				member.getEmail(), 
 				member.getName(),
-				member.getRole());
+				member.getRole(),
+				member.getPassword());
 	}
 }

@@ -21,7 +21,7 @@
     <!-- 왼쪽 메뉴 -->
     <div class="col-md-3">
       <div class="list-group">
-        <a th:href="@{userList}" class="list-group-item list-group-item-action">회원 관리</a>
+        <a class="list-group-item list-group-item-action" th:if="${isAdmin == true}" th:href="@{userList}">회원 관리</a>
         <a th:href="@{userDelete}" class="list-group-item list-group-item-action">회원 탈퇴</a>
         <a th:href="@{userBoard}" class="list-group-item list-group-item-action">게시물 관리</a>
         <a th:href="@{userReply}" class="list-group-item list-group-item-action">댓글 관리</a>
@@ -35,7 +35,7 @@
         <!-- 비밀번호 입력창 -->
         <div class="form-group">
           <label for="password">비밀번호</label>
-          <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력하세요">
+          <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력하세요" name="password">
         </div>
 
         <!-- 탈퇴 버튼 -->
@@ -61,13 +61,25 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-        <form id="deleteForm" method="POST" th:action="@{/userDelete}">
-          <input type="submit" class="btn btn-danger" data-dismiss="modal" value="탈퇴" >
+        <form id="deleteForm" method="POST" th:action="@{/user/userDelete}">
+          <input type="hidden" name="password" id="hiddenPassword">
+          <input type="submit" class="btn btn-danger"  onclick="submitForm()" value="탈퇴" >
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  // 모달이 열릴 때 비밀번호를 hidden 필드에 설정
+  $('#confirmModal').on('show.bs.modal', function (event) {
+    var password = $('#password').val();  // 입력한 비밀번호 가져오기
+    $('#hiddenPassword').val(password);   // hidden 필드에 비밀번호 설정
+  });
+  function submitForm() {
+    document.getElementById("deleteForm").submit();
+  }
+</script>
 
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
 </body>

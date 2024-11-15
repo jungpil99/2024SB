@@ -24,18 +24,10 @@
         <div class="col-md-4">
             <h4>상세 검색</h4>
             <form method="post" th:action="@{/transport/transportSearch}">
-                <div class="form-group">
-                    <button class="btn btn-outline-primary" id="round-trip" onclick="toggleArrivalDate(true)"
-                            type="button">왕복
-                    </button>
-                    <button class="btn btn-outline-primary" id="one-way" onclick="toggleArrivalDate(false)"
-                            type="button">편도
-                    </button>
-                </div>
 
                 <div class="form-group">
                     <label for="transport-select">교통수단 선택</label>
-                    <select class="form-control" id="transport-select" name="transport">
+                    <select class="form-control" id="transport-select" name="transportType">
                         <option value="all">전체</option>
                         <option value="airplane">비행기</option>
                         <option value="train">기차</option>
@@ -57,34 +49,14 @@
                 <!-- 여행지 검색 -->
                 <div class="form-group">
                     <label for="destination">여행지 검색</label>
-                    <input class="form-control" id="destination" placeholder="여행지를 입력하세요" type="text">
+                    <input class="form-control" id="destination" placeholder="여행지를 입력하세요" type="text" name="departureCity">
                 </div>
-
 
                 <div class="form-group">
                     <input class="btn btn-primary btn-block" style="margin-top: 20px;" type="submit" value="검색">
                 </div>
             </form>
 
-            <script>
-                // 도착일 필드를 숨기거나 보이게 하는 함수
-                function toggleArrivalDate(isRoundTrip) {
-                    const arrivalDateContainer = document.getElementById('arrival-date-container');
-
-                    if (isRoundTrip) {
-                        // 왕복을 선택하면 도착일 필드 보이기
-                        arrivalDateContainer.style.display = 'block';
-                    } else {
-                        // 편도를 선택하면 도착일 필드 숨기기
-                        arrivalDateContainer.style.display = 'none';
-                    }
-                }
-
-                // 페이지 로딩 시 기본적으로 왕복으로 설정 (편도을 클릭했을 때 숨기기)
-                document.addEventListener('DOMContentLoaded', function () {
-                    toggleArrivalDate(true); // 기본은 왕복
-                });
-            </script>
         </div>
 
 
@@ -94,71 +66,35 @@
             <table class="table table-bordered">
                 <tbody>
                 <!-- 여행지 정보 (서버에서 데이터베이스 정보를 받아와서 표시) -->
-                <tr>
-<!--                    <td style="width: 30%; padding: 0;">-->
-<!--                        <div class="card">-->
-<!--                                <img alt="여행지1" class="card-img-top" src="/images/image1.jpg"-->
-<!--                                     style="width: 100%; height: 200px; object-fit: cover; vertical-align: top;">-->
-<!--                        </div>-->
-<!--                    </td>-->
+                <tr th:each="transport : ${results}">
                     <td>
                         <div class="card-body text-center d-flex align-items-center justify-content-between">
 
                             <div class="mr-3">
-                                <i class="fas fa-plane" style="font-size: 24px;"></i> <!-- 비행기 아이콘 -->
+                                <i class="fas fa-plane" style="font-size: 24px;" th:if="${transport.type == '비행기'}"></i>
+                                <!-- 교통수단 타입이 기차 -->
+                                <i class="fas fa-train" style="font-size: 24px;" th:if="${transport.type == '기차'}"></i>
+                                <!-- 교통수단 타입이 버스 -->
+                                <i class="fas fa-bus" style="font-size: 24px;" th:if="${transport.type == '버스'}"></i>
                             </div>
                             <!-- 출발 날짜, 돌아오는 날, 가격 표시 -->
                             <div class="mr-3">
-                                <p><strong>출발일:</strong> 2024-12-01</p>
-                                <p><strong>돌아오는 날:</strong> 2024-12-07</p>
+                                <p th:text="'출발일 : ' + ${transport.departureTime}"></p>
+                                <p th:text="'돌아오는 날 : ' + ${transport.arrivalTime}"></p>
                             </div>
 
                             <!-- 항공사 정보 -->
                             <div class="mr-3">
-                                <p><strong>항공사:</strong> 대한항공</p>
-                                <p><strong>가격:</strong> 500,000원</p>
+                                <p th:text="'출발지 : ' + ${transport.departureCity}"></p>
+                                <p th:text="'도착지 : ' + ${transport.arrivalCity}"></p>
                             </div>
 
                             <!-- 항공사 링크 버튼 -->
                             <form method="get" action="https://www.koreanair.com">
                                 <button type="submit" class="btn btn-info">사이트</button>
                             </form>
-                        </div>
                     </td>
-                </tr>
-                <tr>
-<!--                    <td style="width: 30%; padding: 0;">-->
-<!--                        <div class="card">-->
-<!--                            <a th:href="@{/tripDetail}">-->
-<!--                                <img alt="여행지2" class="card-img-top" src="/images/image2.jpg"-->
-<!--                                     style="width: 100%; height: 200px; object-fit: cover; vertical-align: top;">-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                    </td>-->
-                    <td>
-                        <div class="card-body text-center d-flex align-items-center justify-content-between">
 
-                            <div class="mr-3">
-                                <i class="fas fa-train" style="font-size: 24px;"></i> <!-- 기차 아이콘 -->
-                            </div>
-                            <!-- 출발 날짜, 돌아오는 날, 가격 표시 -->
-                            <div class="mr-3">
-                                <p><strong>출발일:</strong> 2024-12-01</p>
-                                <p><strong>돌아오는 날:</strong> 2024-12-07</p>
-                            </div>
-
-                            <!-- 교통수단 정보 -->
-                            <div class="mr-3">
-                                <p><strong>교통수단:</strong> KTX</p>
-                                <p><strong>가격:</strong> 150,000원</p>
-                            </div>
-
-                            <!-- KTX 링크 버튼 -->
-                            <form method="get" action="https://www.korail.com">
-                                <button type="submit" class="btn btn-info">사이트</button>
-                            </form>
-                        </div>
-                    </td>
                 </tr>
                 </tbody>
             </table>

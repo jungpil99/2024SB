@@ -13,4 +13,6 @@ public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     public void findByBoardIdx(Integer boardIdx);
 
     public List<Reply> findByUsername(String username);
+
+    void deleteByUsername(String username);
 }

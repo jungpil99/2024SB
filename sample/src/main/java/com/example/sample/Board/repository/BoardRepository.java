@@ -18,4 +18,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     @Query("SELECT b FROM Board b WHERE b.title LIKE %:title%")
     List<Board> findByTitleContaining(@Param("title") String title);
+
+    void deleteByUsername(String username);
 }

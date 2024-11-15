@@ -20,17 +20,70 @@
     <!-- 왼쪽 메뉴 -->
       <div class="col-md-3">
           <div class="list-group">
-              <a th:href="@{userList}" class="list-group-item list-group-item-action">회원 관리</a>
+              <a class="list-group-item list-group-item-action" th:if="${isAdmin == true}" th:href="@{userList}">회원 관리</a>
               <a th:href="@{userDelete}" class="list-group-item list-group-item-action">회원 탈퇴</a>
               <a th:href="@{userBoard}" class="list-group-item list-group-item-action">게시물 관리</a>
               <a th:href="@{userReply}" class="list-group-item list-group-item-action">댓글 관리</a>
           </div>
       </div>
 
+      <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="successModal" role="dialog"
+           tabindex="-1" th:if="${modal != null}">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="successModalLabel">알림</h5>
+                      <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <p th:text="${modal}"></p> <!-- 에러 메시지 표시 -->
+                  </div>
+                  <div class="modal-footer">
+                      <a class="btn btn-secondary" href="/user/userMain">닫기</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorModal" role="dialog"
+           tabindex="-1" th:if="${error != null}">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="errorModalLabel">알림</h5>
+                      <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <p th:text="${error}"></p> <!-- 에러 메시지 표시 -->
+                  </div>
+                  <div class="modal-footer">
+                      <a class="btn btn-secondary" href="/user/userMain">닫기</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <script>
+          $(document).ready(function () {
+              if ('${modal}' != '') {
+                  $('#successModal').modal('show');
+              }
+              if ('${error}' != '') {
+                  $('#errorModal').modal('show');
+              }
+          });
+      </script>
+
     <!-- 오른쪽 폼 -->
     <div class="col-md-9">
+
       <h3>유저 정보 수정</h3>
-      <form th:action="@{/changePwd}" method="post">
+
+      <form th:action="@{/user/changePwd}" method="post">
 <!--        <input type="hidden" name="id" th:value="${id}" />-->
         <div class="form-group">
           <label for="email">이메일</label>
@@ -44,12 +97,12 @@
 
         <div class="form-group">
           <label for="currentPassword">현재 비밀번호</label>
-          <input type="password" class="form-control" id="currentPassword" placeholder="현재 비밀번호 입력">
+          <input type="password" class="form-control" id="currentPassword" placeholder="현재 비밀번호 입력" name="currentPassword" >
         </div>
 
         <div class="form-group">
           <label for="newPassword">새로운 비밀번호</label>
-          <input type="password" class="form-control" id="newPassword" placeholder="새로운 비밀번호 입력">
+          <input type="password" class="form-control" id="newPassword" placeholder="새로운 비밀번호 입력" name="newPassword">
         </div>
 
         <button type="submit" class="btn btn-primary">비밀번호 변경</button>

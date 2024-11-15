@@ -25,7 +25,7 @@ public class Reply {
 
     private String replyContents;
 
-    private LocalDateTime replyDate;
+    private String replyDate;
 
     private Integer boardIdx;
 }

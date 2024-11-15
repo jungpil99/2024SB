@@ -52,4 +52,8 @@ public class NoticeService {
     public void updateNotice(Notice notice){
         noticeRepository.save(notice);
     }
+
+    public List<Notice> selectListUserName(String username){
+        return noticeRepository.findByUsername(username);
+    }
 }

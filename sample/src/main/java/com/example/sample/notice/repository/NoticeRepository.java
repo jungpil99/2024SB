@@ -15,4 +15,6 @@ public interface NoticeRepository extends JpaRepository<Notice, Integer> {
 
     @Query("SELECT b FROM Notice b WHERE b.title LIKE %:title%")
     List<Notice> findByTitleContaining(@Param("title") String title);
+
+    List<Notice> findByUsername(String username);
 }

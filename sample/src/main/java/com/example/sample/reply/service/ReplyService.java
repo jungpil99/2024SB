@@ -37,7 +37,7 @@ public class ReplyService {
                 .username(authInfo.getName())
                 .replyContents(replyContents)
                 .boardIdx(boardIdx)
-                .replyDate(LocalDateTime.now())
+                .replyDate(LocalDateTime.now().toString().substring(0, 10))
                 .build();
 
         replyRepository.save(reply);
@@ -45,6 +45,10 @@ public class ReplyService {
 
     public void deleteReply(@RequestParam("replyId") Integer replyId){
         replyRepository.deleteById(replyId);
+    }
+
+    public void deleteByUserName(String username){
+        replyRepository.deleteByUsername(username);
     }
 
     public void updateReply(@RequestParam("replyId") Integer replyId, Reply reply){
