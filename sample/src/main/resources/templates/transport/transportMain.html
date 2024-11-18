@@ -45,22 +45,69 @@
 <hr>
 
 <div class="container">
-  <form th:action="@{transport/transportSearch}" method="post" class="mb-4">
-    <div class="row">
-      <!-- 왕복, 편도 선택 -->
-      <div class="col-md-12 mb-4">
-        <button type="button" class="btn btn-outline-primary" id="round-trip" onclick="toggleArrivalDate(true)">왕복</button>
-        <button type="button" class="btn btn-outline-primary" id="one-way" onclick="toggleArrivalDate(false)">편도</button>
+
+  <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorModal" role="dialog"
+       tabindex="-1" th:if="${departTimeNull != null}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="errorModalLabel">알림</h5>
+          <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p th:text="${departTimeNull}"></p> <!-- 에러 메시지 표시 -->
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" href="/transport/transportMain">닫기</a>
+        </div>
       </div>
-      <!-- 교통수단 선택 -->
+    </div>
+  </div>
+
+  <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorsModal" role="dialog"
+       tabindex="-1" th:if="${departCityNull != null}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="errorsModalLabel">알림</h5>
+          <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p th:text="${departCityNull}"></p> <!-- 에러 메시지 표시 -->
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" href="/transport/transportMain">닫기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      if ('${departTimeNull}' != '') {
+        $('#errorModal').modal('show');
+      }
+      if ('${departTimeNull}' != '') {
+        $('#errorsModal').modal('show');
+      }
+    });
+  </script>
+
+  <form th:action="@{/transport/transportSearch}" method="get" class="mb-4">
+    <input type="hidden" name="templateType" value="transportMain"> <!-- 템플릿 구분 -->
+    <div class="row">
       <div class="col-md-2">
         <div class="form-group">
           <label for="transport-select">교통수단 선택</label>
-          <select id="transport-select" name="transport" class="form-control">
+          <select id="transport-select" name="transportType" class="form-control">
             <option value="all">전체</option>
-            <option value="airplane">비행기</option>
-            <option value="train">기차</option>
-            <option value="bus">버스</option>
+            <option value="비행기">비행기</option>
+            <option value="기차">기차</option>
+            <option value="버스">버스</option>
           </select>
         </div>
       </div>
@@ -69,15 +116,16 @@
       <div class="col-md-4">
         <div class="form-group">
           <label for="departure-date">출발일</label>
-          <input type="date" id="departure-date" name="departureDate" class="form-control" onchange="setMinArrivalDate()">
+          <input type="date" id="departure-date" name="departureTime" class="form-control">
         </div>
       </div>
 
       <!-- 도착일 -->
       <div class="col-md-4" id="arrival-date-container">
         <div class="form-group">
-          <label for="arrival-date">돌아오는 날</label>
-          <input type="date" id="arrival-date" name="arrivalDate" class="form-control" min="">
+          <label for="departureCity">출발지 검색</label>
+          <input class="form-control" id="departureCity" name="departureCity" placeholder="출발지를 입력하세요"
+                 type="text">
         </div>
       </div>
 
@@ -89,62 +137,59 @@
   </form>
 
   <script>
-    // 도착일 필드를 숨기거나 보이게 하는 함수
-    function toggleArrivalDate(isRoundTrip) {
-      const arrivalDateContainer = document.getElementById('arrival-date-container');
-
-      if (isRoundTrip) {
-        // 왕복을 선택하면 도착일 필드 보이기
-        arrivalDateContainer.style.display = 'block';
-      } else {
-        // 편도를 선택하면 도착일 필드 숨기기
-        arrivalDateContainer.style.display = 'none';
+    document.getElementById("departure-date").addEventListener("change", function() {
+      let dateValue = this.value;  // 선택된 날짜 (yyyy-mm-dd)
+      if (dateValue) {
+        // 시간을 00:00으로 설정하여 departureTime에 다시 할당
+        let dateTimeValue = dateValue + " 00:00";  // 예: "2024-12-01 00:00"
+        document.getElementById("departure-date").setAttribute("value", dateTimeValue);
       }
-    }
-
-    // 페이지 로딩 시 기본적으로 왕복으로 설정 (편도을 클릭했을 때 숨기기)
-    document.addEventListener('DOMContentLoaded', function () {
-      toggleArrivalDate(true); // 기본은 왕복
     });
   </script>
 
+<!--  <script>-->
+<!--    // 도착일 필드를 숨기거나 보이게 하는 함수-->
+<!--    function toggleArrivalDate(isRoundTrip) {-->
+<!--      const arrivalDateContainer = document.getElementById('arrival-date-container');-->
+
+<!--      if (isRoundTrip) {-->
+<!--        // 왕복을 선택하면 도착일 필드 보이기-->
+<!--        arrivalDateContainer.style.display = 'block';-->
+<!--      } else {-->
+<!--        // 편도를 선택하면 도착일 필드 숨기기-->
+<!--        arrivalDateContainer.style.display = 'none';-->
+<!--      }-->
+<!--    }-->
+
+<!--    // 페이지 로딩 시 기본적으로 왕복으로 설정 (편도을 클릭했을 때 숨기기)-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--      toggleArrivalDate(true); // 기본은 왕복-->
+<!--    });-->
+<!--  </script>-->
+
   <div class="row">
-    <!-- 비행기 교통수단 -->
-    <div class="col-md-4 mb-4">
+    <!-- 랜덤으로 교통수단 표시 -->
+    <div th:each="transport : ${list}" class="col-md-4 mb-4">
       <div class="card">
-        <a href="#">
-        <img alt="비행기" class="card-img-top" src="/images/image1.jpg">
+        <img th:if="${transport.transportType == '비행기'}" alt="비행기" class="card-img-top" src="/images/airplane.jpg">
+        <!-- 기차 이미지 -->
+        <img th:if="${transport.transportType == '기차'}" alt="기차" class="card-img-top" src="/images/train.jpg">
+        <!-- 버스 이미지 -->
+        <img th:if="${transport.transportType == '버스'}" alt="버스" class="card-img-top" src="/images/bus.jpg">
         <div class="card-body text-center">
-          <h5 class="card-title">비행기</h5>
-          <p class="card-price"><strong>가격: 1,200,000원</strong></p>
+          <h5 class="card-title" th:text="${transport.transportType}"></h5> <!-- 교통수단 종류 -->
+          <p class="card-price">
+            <strong th:text="'가격: ' + ${transport.price} + '원'"></strong> <!-- 가격 -->
+          </p>
+          <div class="mr-3">
+            <p th:text="'출발일: ' + ${transport.departureTime}"></p>
+            <p th:text="'도착시간: ' + ${transport.arrivalTime}"></p>
+          </div>
+          <div class="mr-3">
+            <p th:text="'출발지: ' + ${transport.departureCity}"></p>
+            <p th:text="'도착지: ' + ${transport.arrivalCity}"></p>
+          </div>
         </div>
-        </a>
-      </div>
-    </div>
-
-    <!-- 기차 교통수단 -->
-    <div class="col-md-4 mb-4">
-      <div class="card">
-        <a href="#">
-        <img alt="기차" class="card-img-top" src="/images/image1.jpg">
-        <div class="card-body text-center">
-          <h5 class="card-title">기차</h5>
-          <p class="card-price"><strong>가격: 200,000원</strong></p>
-        </div>
-        </a>
-      </div>
-    </div>
-
-    <!-- 버스 교통수단 -->
-    <div class="col-md-4 mb-4">
-      <div class="card">
-        <a href="#">
-        <img alt="버스" class="card-img-top" src="/images/image1.jpg">
-        <div class="card-body text-center">
-          <h5 class="card-title">버스</h5>
-          <p class="card-price"><strong>가격: 50,000원</strong></p>
-        </div>
-        </a>
       </div>
     </div>
   </div>

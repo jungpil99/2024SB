@@ -20,10 +20,61 @@
 
 <div class="container mt-4">
     <div class="row">
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorModal" role="dialog"
+             tabindex="-1" th:if="${departTimeNull != null and departTimeNull != ''}">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">알림</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p th:text="${departTimeNull}"></p> <!-- 에러 메시지 표시 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorsModal" role="dialog"
+             tabindex="-1" th:if="${departCityNull != null and departCityNull != ''}">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorsModalLabel">알림</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p th:text="${departCityNull}"></p> <!-- 에러 메시지 표시 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                // departTimeNull이나 departCityNull이 null 또는 빈 문자열이 아닐 때 모달을 표시
+                if ('${departTimeNull}' != '' && '${departTimeNull}' != null) {
+                    $('#errorModal').modal('show');
+                }
+                if ('${departCityNull}' != '' && '${departCityNull}' != null) {
+                    $('#errorsModal').modal('show');
+                }
+            });
+        </script>
         <!-- 왼쪽: 날짜 선택 및 여행지 검색 -->
         <div class="col-md-4">
             <h4>상세 검색</h4>
-            <form method="post" th:action="@{/transport/transportSearch}">
+            <form method="get" th:action="@{/transport/transportSearch}">
 
                 <div class="form-group">
                     <label for="transport-select">교통수단 선택</label>
@@ -37,19 +88,14 @@
                 <!-- 날짜 선택기 -->
                 <div class="form-group">
                     <label for="departure-date">출발일</label>
-                    <input class="form-control" id="departure-date" name="departureDate" onchange="setMinArrivalDate()"
-                           type="date">
-                </div>
-
-                <div class="form-group" id="arrival-date-container" style="display:none;">
-                    <label for="arrival-date">돌아오는 날</label>
-                    <input class="form-control" id="arrival-date" min="" name="arrivalDate" type="date">
+                    <input class="form-control" id="departure-date" name="departureTime" type="date">
                 </div>
 
                 <!-- 여행지 검색 -->
                 <div class="form-group">
-                    <label for="destination">여행지 검색</label>
-                    <input class="form-control" id="destination" placeholder="여행지를 입력하세요" type="text" name="departureCity">
+                    <label for="departureCity">출발지 검색</label>
+                    <input class="form-control" id="departureCity" name="departureCity" placeholder="출발지를 입력하세요"
+                           type="text">
                 </div>
 
                 <div class="form-group">
@@ -66,38 +112,81 @@
             <table class="table table-bordered">
                 <tbody>
                 <!-- 여행지 정보 (서버에서 데이터베이스 정보를 받아와서 표시) -->
-                <tr th:each="transport : ${results}">
+                <tr th:each="list : ${list}">
                     <td>
                         <div class="card-body text-center d-flex align-items-center justify-content-between">
 
+<!--                            <div>-->
+<!--                                <span th:text="${list.transportType}"></span>-->
+<!--                            </div>-->
                             <div class="mr-3">
-                                <i class="fas fa-plane" style="font-size: 24px;" th:if="${transport.type == '비행기'}"></i>
+                                <i class="fas fa-plane" style="font-size: 24px;" th:if="${list.transportType == '비행기'}"></i>
                                 <!-- 교통수단 타입이 기차 -->
-                                <i class="fas fa-train" style="font-size: 24px;" th:if="${transport.type == '기차'}"></i>
+                                <i class="fas fa-train" style="font-size: 24px;" th:if="${list.transportType == '기차'}"></i>
                                 <!-- 교통수단 타입이 버스 -->
-                                <i class="fas fa-bus" style="font-size: 24px;" th:if="${transport.type == '버스'}"></i>
+                                <i class="fas fa-bus" style="font-size: 24px;" th:if="${list.transportType == '버스'}"></i>
                             </div>
                             <!-- 출발 날짜, 돌아오는 날, 가격 표시 -->
                             <div class="mr-3">
-                                <p th:text="'출발일 : ' + ${transport.departureTime}"></p>
-                                <p th:text="'돌아오는 날 : ' + ${transport.arrivalTime}"></p>
+                                <p th:text="'출발 일 : ' + ${list.departureTime}"></p>
+                                <p th:text="'도착 시간 : ' + ${list.arrivalTime}"></p>
                             </div>
 
                             <!-- 항공사 정보 -->
                             <div class="mr-3">
-                                <p th:text="'출발지 : ' + ${transport.departureCity}"></p>
-                                <p th:text="'도착지 : ' + ${transport.arrivalCity}"></p>
+                                <p th:text="'출발지 : ' + ${list.departureCity}"></p>
+                                <p th:text="'도착지 : ' + ${list.arrivalCity}"></p>
                             </div>
 
-                            <!-- 항공사 링크 버튼 -->
-                            <form method="get" action="https://www.koreanair.com">
-                                <button type="submit" class="btn btn-info">사이트</button>
-                            </form>
+                        </div>
                     </td>
-
                 </tr>
                 </tbody>
             </table>
+
+            <div th:if="${list != null and !list.isEmpty()}">
+                <!-- 전역 변수 선언 -->
+                <nav aria-label="Page navigation" th:with="pageNumber = ${list.pageable.pageNumber}, pageSize = ${list.pageable.pageSize}, totalPages = ${list.totalPages}, startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1}, tempEndPage = ${startPage + pageSize - 1}, endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/transport/transportSearch(page=0, departureTime=${departureTime}, departureCity=${departureCity}, transportType=${transportType})}">
+                                <span>&laquo;</span>
+                                <span class="sr-only">First</span>
+                            </a>
+                        </li>
+
+                        <!-- 이전으로 이동 -->
+                        <li class="page-item" th:classappend="${list.first} ? 'disabled'">
+                            <a aria-label="Previous" class="page-link" th:href="@{/transport/transportSearch(page=${pageNumber - 1}, departureTime=${departureTime}, departureCity=${departureCity}, transportType=${transportType})}">
+                                <span aria-hidden="true">&lt;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+
+                        <!-- 특정 페이지로 이동 -->
+                        <li class="page-item" th:classappend="${page == pageNumber + 1} ? 'active'" th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                            <a class="page-link" th:href="@{/transport/transportSearch(page=${page - 1}, departureTime=${departureTime}, departureCity=${departureCity}, transportType=${transportType})}" th:text="${page}"></a>
+                        </li>
+
+                        <!-- 다음으로 이동 -->
+                        <li class="page-item" th:classappend="${list.last} ? 'disabled'">
+                            <a aria-label="Next" class="page-link" th:href="@{/transport/transportSearch(page=${pageNumber + 1}, departureTime=${departureTime}, departureCity=${departureCity}, transportType=${transportType})}">
+                                <span aria-hidden="true">&gt;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+
+                        <!-- 마지막으로 이동 -->
+                        <li class="page-item" th:classappend="${pageNumber == totalPages - 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/transport/transportSearch(page=${totalPages - 1}, departureTime=${departureTime}, departureCity=${departureCity}, transportType=${transportType})}">
+                                <span>&raquo;</span>
+                                <span class="sr-only">Last</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div> <!-- /container -->
+
         </div>
     </div>
 </div>

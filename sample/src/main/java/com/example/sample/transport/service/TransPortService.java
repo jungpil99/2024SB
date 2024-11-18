@@ -15,30 +15,60 @@ public class TransPortService {
     @Autowired
     TransPortRepository transPortRepository;
 
-    public List<TransPort> searchTransports(String departureTime, String arrivalTime, String departureCity, String arrivalCity, String transportType) {
-        Specification<TransPort> spec = Specification.where(TransportSpecification.withDepartureTime(departureTime))
-                .and(TransportSpecification.withArrivalTime(arrivalTime))
-                .and(TransportSpecification.withDepartureCity(departureCity))
-                .and(TransportSpecification.withArrivalCity(arrivalCity))
-                .and(TransportSpecification.withTransportType(transportType));
+    public List<TransPort> searchTransports(String departureTime, String departureCity, String transportType) {
+        Specification<TransPort> spec = Specification.where(null);
+
+        // 각 조건에 대해 null이나 빈 값 체크 후 필터 추가
+        if (departureTime != null && !departureTime.isEmpty()) {
+            spec = spec.and(TransportSpecification.withDepartureTime(departureTime));
+        }
+
+        if (departureCity != null && !departureCity.isEmpty()) {
+            spec = spec.and(TransportSpecification.withDepartureCity(departureCity));
+        }
+
+        if (transportType != null && !transportType.equals("all")) {
+            spec = spec.and(TransportSpecification.withTransportType(transportType));
+        }
 
         return transPortRepository.findAll(spec);
     }
 
-    public List<TransPort> searchOneWay(String departureTime, String departureCity, String arrivalCity, String transportType) {
-        Specification<TransPort> spec = Specification.where(TransportSpecification.withDepartureTime(departureTime))
-                .and(TransportSpecification.withDepartureCity(departureCity))
-                .and(TransportSpecification.withArrivalCity(arrivalCity))
-                .and(TransportSpecification.withTransportType(transportType));
+    public List<TransPort> searchByDepartTime(String departureTime, String transportType) {
+        Specification<TransPort> spec = Specification.where(null);
+
+        // 각 조건에 대해 null이나 빈 값 체크 후 필터 추가
+        if (departureTime != null && !departureTime.isEmpty()) {
+            spec = spec.and(TransportSpecification.withDepartureTime(departureTime));
+        }
+
+        if (transportType != null && !transportType.equals("all")) {
+            spec = spec.and(TransportSpecification.withTransportType(transportType));
+        }
 
         return transPortRepository.findAll(spec);
     }
 
-    public List<TransPort> searchNoArrive(String departureTime, String arrivalTime, String departureCity, String transportType) {
-        Specification<TransPort> spec = Specification.where(TransportSpecification.withDepartureTime(departureTime))
-                .and(TransportSpecification.withArrivalTime(arrivalTime))
-                .and(TransportSpecification.withDepartureCity(departureCity))
-                .and(TransportSpecification.withTransportType(transportType));
+    public List<TransPort> searchByDepartCity(String departureCity, String transportType) {
+        Specification<TransPort> spec = Specification.where(null);
+
+        if (departureCity != null && !departureCity.isEmpty()) {
+            spec = spec.and(TransportSpecification.withDepartureCity(departureCity));
+        }
+
+        if (transportType != null && !transportType.equals("all")) {
+            spec = spec.and(TransportSpecification.withTransportType(transportType));
+        }
+
+        return transPortRepository.findAll(spec);
+    }
+
+    public List<TransPort> searchByTransType(String transportType) {
+        Specification<TransPort> spec = Specification.where(null);
+
+        if (transportType != null && !transportType.equals("all")) {
+            spec = spec.and(TransportSpecification.withTransportType(transportType));
+        }
 
         return transPortRepository.findAll(spec);
     }
