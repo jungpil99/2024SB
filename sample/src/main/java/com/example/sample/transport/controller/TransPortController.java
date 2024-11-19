@@ -83,9 +83,9 @@ public class TransPortController {
 
 
         if (departureTime == null || departureTime.isEmpty()) {
-            if ("transportMain".equals(templateType)) {
+            if ("transportMain".equals(templateType)) {// 메인 폼에서 에러 발생 시
                 model.addAttribute("departTimeNull", "출발 날짜를 선택하세요");
-                return "/transport/transportMain";  // 메인 폼에서 에러 발생 시
+                return "/transport/transportMain";
             }else if (departureCity.isEmpty() && !transportType.equals("all")) {
                 model.addAttribute("departCityNull", "출발 지를 입력해주세요");
                 return "/transport/transportSearch"; // 검색 화면에 머무름
@@ -93,9 +93,9 @@ public class TransPortController {
                 list = transPortService.searchByDepartCity(departureCity, transportType);
             }
         } else if (departureCity == null || departureCity.isEmpty()) {
-            if ("transportMain".equals(templateType)) {
+            if ("transportMain".equals(templateType)) { // 메인 폼에서 에러 발생 시
                 model.addAttribute("departCityNull", "출발 지를 입력해주세요");
-                return "/transport/transportMain";  // 메인 폼에서 에러 발생 시
+                return "/transport/transportMain";
             }else{
                 list = transPortService.searchByDepartTime(departureTime, transportType);
             }

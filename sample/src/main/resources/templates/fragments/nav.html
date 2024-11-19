@@ -21,7 +21,7 @@
                     <li class="material--li" th:if="${session.authInfo != null}" ><span style="color: #9BD2EC;" class="material-symbols-outlined">logout</span>
                     <li th:if="${session.authInfo != null}" ><a href="/logout">로그아웃</a>
                     <li style="margin: 0 15px;" th:if="${session.authInfo != null}">ㅣ
-                    <li><a href="/question">고객센터</a></li>
+                    <li><a href="/question/questionMain">고객센터</a></li>
                 </ul>
             </div>
 
@@ -46,17 +46,12 @@
 <!--                        </ul>-->
                     </li>
                     <li class="mainmenu_list_inner">
-                        <a href="/trip">
-                            <span>국내여행</span>
-                        </a>
-                    </li>
-                    <li class="mainmenu_list_inner">
                         <a href="/transport/transportMain">
                             <span>교통</span>
                         </a>
                     </li>
                     <li class="mainmenu_list_inner">
-                        <a href="/stay">
+                        <a href="/stay/stayMain">
                             <span>숙박</span>
                         </a>
                     </li>

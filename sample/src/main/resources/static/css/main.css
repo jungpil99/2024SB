@@ -2,6 +2,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -307,12 +312,11 @@ main h1:first-of-type {
 
 
 footer {
-	background-color: #f8f9fa; /* 배경색을 밝게 설정 */
+	background-color: #f8f9fa; /* 배경색 */
 	padding: 2rem 0; /* 상하 여백 */
-	margin-top: 3rem; /* 위쪽 여백 */
 	width: 100%;
-	border-top: 1px solid #e9ecef;
-	position: relative;
+	border-top: 1px solid #e9ecef; /* 상단 테두리 */
+	position: relative; /* 일반적인 문서 흐름에 따라 배치 */
 	bottom: 0;
 }
 

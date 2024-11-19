@@ -12,14 +12,40 @@
 
   <meta charset="UTF-8">
   <title>Title</title>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1; /* 남는 공간을 차지하여 푸터를 아래로 밀어냄 */
+    }
+
+    footer {
+      background-color: #f8f9fa;
+      padding: 2rem 0;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+    }
+  </style>
+
 </head>
 <body onLoad="javascript:pop()">
+<div class="wrapper">
 <div th:replace="/fragments/nav.html :: fragment-nav"></div>
 <div th:replace="/fragments/header.html :: fragment-header"></div>
 
-<div class="container" >
+<div class="content container" >
   <h2>문의 사항</h2>
-  <form id="frm" name="frm" method="post" th:action="@{/#}" enctype="multipart/form-data">
+  <form id="frm" name="frm" method="post" th:action="@{/question/questionInsert}">
     <table class="board_detail">
       <tr>
         <td id="title">제목</td>
@@ -39,7 +65,7 @@
     <input type="submit" id="submit" value="저장" class="btn">
   </form>
 </div>
-
+</div>
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>

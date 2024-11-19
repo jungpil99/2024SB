@@ -13,12 +13,38 @@
 
     <meta charset="UTF-8">
     <title>교통수단 검색</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1; /* 남는 공간을 차지하여 푸터를 아래로 밀어냄 */
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 2rem 0;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+        }
+    </style>
+
 </head>
 <body onLoad="javascript:pop()">
+<div class="wrapper">
 <div th:replace="/fragments/nav.html :: fragment-nav"></div>
 <div th:replace="/fragments/header.html :: fragment-header"></div>
 
-<div class="container mt-4">
+<div class="content container mt-4">
     <div class="row">
         <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorModal" role="dialog"
              tabindex="-1" th:if="${departTimeNull != null and departTimeNull != ''}">
@@ -80,9 +106,9 @@
                     <label for="transport-select">교통수단 선택</label>
                     <select class="form-control" id="transport-select" name="transportType">
                         <option value="all">전체</option>
-                        <option value="airplane">비행기</option>
-                        <option value="train">기차</option>
-                        <option value="bus">버스</option>
+                        <option value="비행기">비행기</option>
+                        <option value="기차">기차</option>
+                        <option value="버스">버스</option>
                     </select>
                 </div>
                 <!-- 날짜 선택기 -->
@@ -190,7 +216,7 @@
         </div>
     </div>
 </div>
-
+</div>
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>

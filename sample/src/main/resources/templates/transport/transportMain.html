@@ -13,8 +13,34 @@
 
   <meta charset="UTF-8">
   <title>교통수단 추천</title>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1; /* 남는 공간을 차지하여 푸터를 아래로 밀어냄 */
+    }
+
+    footer {
+      background-color: #f8f9fa;
+      padding: 2rem 0;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+    }
+  </style>
+
 </head>
 <body onLoad="javascript:pop()">
+<div class="wrapper">
 <div th:replace="/fragments/nav.html :: fragment-nav"></div>
 <div th:replace="/fragments/header.html :: fragment-header"></div>
 
@@ -22,13 +48,13 @@
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="/images/image1.jpg" class="d-block w-100" alt="Slide 1">
+        <img src="/images/airplane.jpg" class="d-block w-100" alt="Slide 1">
       </div>
       <div class="carousel-item">
-        <img src="/images/image2.jpg" class="d-block w-100" alt="Slide 2">
+        <img src="/images/train.jpg" class="d-block w-100" alt="Slide 2">
       </div>
       <div class="carousel-item">
-        <img src="/images/image3.jpg" class="d-block w-100" alt="Slide 3">
+        <img src="/images/bus.jpg" class="d-block w-100" alt="Slide 3">
       </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -44,7 +70,7 @@
 
 <hr>
 
-<div class="container">
+<div class="content container">
 
   <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorModal" role="dialog"
        tabindex="-1" th:if="${departTimeNull != null}">
@@ -147,26 +173,6 @@
     });
   </script>
 
-<!--  <script>-->
-<!--    // 도착일 필드를 숨기거나 보이게 하는 함수-->
-<!--    function toggleArrivalDate(isRoundTrip) {-->
-<!--      const arrivalDateContainer = document.getElementById('arrival-date-container');-->
-
-<!--      if (isRoundTrip) {-->
-<!--        // 왕복을 선택하면 도착일 필드 보이기-->
-<!--        arrivalDateContainer.style.display = 'block';-->
-<!--      } else {-->
-<!--        // 편도를 선택하면 도착일 필드 숨기기-->
-<!--        arrivalDateContainer.style.display = 'none';-->
-<!--      }-->
-<!--    }-->
-
-<!--    // 페이지 로딩 시 기본적으로 왕복으로 설정 (편도을 클릭했을 때 숨기기)-->
-<!--    document.addEventListener('DOMContentLoaded', function () {-->
-<!--      toggleArrivalDate(true); // 기본은 왕복-->
-<!--    });-->
-<!--  </script>-->
-
   <div class="row">
     <!-- 랜덤으로 교통수단 표시 -->
     <div th:each="transport : ${list}" class="col-md-4 mb-4">
@@ -194,6 +200,7 @@
     </div>
   </div>
 
+</div>
 </div>
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
 </body>

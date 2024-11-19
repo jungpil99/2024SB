@@ -22,13 +22,11 @@ public class Stay {
 
     private String stayName;
 
+    private String stayCity;
+
     private String stayAddress;
 
     private String stayTel;
-
-    private String checkIn;
-
-    private String checkOut;
 
     private String price;
 

@@ -12,12 +12,38 @@
 
   <meta charset="UTF-8">
   <title>Title</title>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1; /* 남는 공간을 차지하여 푸터를 아래로 밀어냄 */
+    }
+
+    footer {
+      background-color: #f8f9fa;
+      padding: 2rem 0;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+    }
+  </style>
+
 </head>
 <body onLoad="javascript:pop()">
+<div class="wrapper">
 <div th:replace="/fragments/nav.html :: fragment-nav"></div>
 <div th:replace="/fragments/header.html :: fragment-header"></div>
 
-<div class="container mt-5">
+<div class="content container mt-5">
   <h3>게시글 상세</h3>
 
   <!-- 게시글 정보 테이블 -->
@@ -43,7 +69,7 @@
   <!-- 삭제 및 목록 버튼 -->
   <div class="d-flex justify-content-between">
     <a href="/#" class="btn btn-danger">삭제</a>
-    <a href="/#" class="btn btn-secondary">목록</a>
+    <a href="#" id="list" class="btn" onclick="window.history.back(); return false;">목록</a>
   </div>
 
   <!-- 답변 영역 -->
@@ -52,7 +78,7 @@
     <textarea class="form-control" id="answer" rows="5"  readonly></textarea>
   </div>
 </div>
-
+</div>
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>

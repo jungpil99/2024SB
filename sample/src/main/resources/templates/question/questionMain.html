@@ -10,12 +10,38 @@
 
   <meta charset="UTF-8">
   <title>Title</title>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1; /* 남는 공간을 차지하여 푸터를 아래로 밀어냄 */
+    }
+
+    footer {
+      background-color: #f8f9fa;
+      padding: 2rem 0;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+    }
+  </style>
+
 </head>
 <body onLoad="javascript:pop()">
+<div class="wrapper">
 <div th:replace="/fragments/nav.html :: fragment-nav"></div>
 <div th:replace="/fragments/header.html :: fragment-header"></div>
 
-<div class="container mt-5">
+<div class="content container mt-5">
   <h3>글 목록</h3>
   <table class="table table-bordered">
     <thead>
@@ -30,7 +56,7 @@
     <!-- 예시 데이터 -->
     <tr>
       <td>1</td>
-      <td><a href="/questionDetail">게시글 제목 1</a></td>
+      <td><a href="/question/questionDetail">게시글 제목 1</a></td>
       <td>2024-11-08</td>
       <td>답변 완료</td>
     </tr>
@@ -52,7 +78,7 @@
   <!-- 글 작성 버튼 -->
   <a href="/write" class="btn btn-primary">글 작성</a>
 </div>
-
+</div>
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>

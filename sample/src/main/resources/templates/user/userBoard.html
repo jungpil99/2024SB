@@ -11,17 +11,44 @@
 
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1; /* 남는 공간을 차지하여 푸터를 아래로 밀어냄 */
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 2rem 0;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+        }
+    </style>
+
 </head>
 <body onLoad="javascript:pop()">
+<div class="wrapper">
 <div th:replace="/fragments/nav.html :: fragment-nav"></div>
 <div th:replace="/fragments/header.html :: fragment-header"></div>
 
-<div class="container mt-5">
+<div class="content container mt-5">
     <div class="row">
         <!-- 왼쪽 메뉴 -->
         <div class="col-md-3">
             <div class="list-group">
                 <a class="list-group-item list-group-item-action" th:if="${isAdmin == true}" th:href="@{userList}">회원 관리</a>
+                <a th:href="@{userMain}" class="list-group-item list-group-item-action">유저 정보 확인</a>
                 <a class="list-group-item list-group-item-action" th:href="@{userDelete}">회원 탈퇴</a>
                 <a class="list-group-item list-group-item-action" th:href="@{userBoard}">게시물 관리</a>
                 <a class="list-group-item list-group-item-action" th:href="@{userReply}">댓글 관리</a>
@@ -64,7 +91,7 @@
         </div>
     </div>
 </div>
-
+</div>
 
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
 </body>
