@@ -20,13 +20,13 @@ public class Question {
 
     private String title;
 
-    private String content;
+    private String contents;
 
     private String username;
 
     private String createdDatetime;
 
-    private String answer;
+    private String answers;
 
     private String answerDatetime;
 

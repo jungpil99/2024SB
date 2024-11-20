@@ -61,7 +61,7 @@ public class LoginController {
 			}
 			response.addCookie(rememberCookie);//이걸로 브라우저에 응답을 안하면 쿠키 저장을 안함
 
-			return "login/loginSuccess";
+			return "redirect:/main";
 		}catch(WrongIdPasswordException e) {
 			errors.reject("idPasswordNotMatching"); //폼 양식 자체에 오류를 준다
 			return "login/loginForm";

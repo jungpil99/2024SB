@@ -60,7 +60,7 @@
                 <p th:text="${errorMessages}"></p> <!-- 에러 메시지 표시 -->
             </div>
             <div class="modal-footer">
-                <a class="btn btn-secondary" href="/board/boardList">닫기</a>
+                <a class="btn btn-secondary" href="#" id="close">닫기</a>
             </div>
         </div>
     </div>
@@ -86,6 +86,26 @@
     </div>
 </div>
 
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="Role_errorModal" role="dialog"
+         tabindex="-1" th:if="${RoleError != null}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="Role_errorModalLabel">알림</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p th:text="${RoleError}"></p> <!-- 에러 메시지 표시 -->
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary" href="#" id="closeBtn">닫기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <script>
     $(document).ready(function () {
         if ('${errorMessages}' != '') {
@@ -94,6 +114,17 @@
         if ('${replyError}' != '') {
             $('#reply_errorModal').modal('show');
         }
+        if('${RoleError}' != ''){
+            $('#Role_errorModal').modal('show');
+        }
+
+        let boardIdx = $("#boardIdx").val(); // boardIdx 값을 가져옴
+        $("#closeBtn").on("click", function () {
+            window.location.href = "/board/boardDetail?boardIdx=" + boardIdx; // 동적으로 href 설정
+        });
+        $("#close").on("click", function () {
+            window.location.href = "/board/boardDetail?boardIdx=" + boardIdx; // 동적으로 href 설정
+        });
     });
 </script>
 
@@ -127,8 +158,8 @@
                 <td colspan="3" th:text="${board.title}"></td>
             </tr>
             <tr>
-                <td class="view_text" colspan="4" th:text="${board.contents }">
-                    <!--						<textarea title="내용" id="contents" name="contents" th:text="${board.contents }"  readonly ></textarea>-->
+                <td class="view_text" colspan="4">
+                    <textarea title="내용" id="contents" name="contents" th:text="${board.contents }"  readonly ></textarea>
                 </td>
             </tr>
             </tbody>
@@ -165,7 +196,7 @@
     <div class="reply_contents" th:each="reply : ${list.content}">
         <table>
             <tr>
-                <td th:text="${reply.username }"></td>
+                <td th:text="${reply.username}"></td>
                 <td>|</td>
                 <!--					<td>-->
                 <!--						<label id="edit_reply">-->
@@ -175,7 +206,9 @@
                 <td>
                     <form method="post" style="display:inline;" th:action="@{/updateReply}">
                         <label id="edit_reply">
-                            <textarea name="replyContents" th:text="${reply.replyContents}"></textarea>
+                            <textarea name="replyContents" th:text="${reply.replyContents}"
+                                      th:attr="readonly=${User != null && User.equals(reply.username) ? null : 'readonly'}"
+                                      readonly></textarea>
                         </label>
                         <input name="boardIdx" th:value="${board.boardIdx}" type="hidden"/>
                         <input name="username" th:value="${reply.username}" type="hidden"/>
@@ -186,7 +219,7 @@
                         <input name="boardIdx" th:value="${board.boardIdx}" type="hidden"/>
                         <input name="username" th:value="${reply.username}" type="hidden"/>
                         <input name="replyId" th:value="${reply.replyId}" type="hidden"/>
-                        <input class="btn" type="submit" value="삭제">
+                        <input class="btn btn-danger" type="submit" value="삭제">
                     </form>
                 </td>
             </tr>

@@ -56,4 +56,8 @@ public class NoticeService {
     public List<Notice> selectListUserName(String username){
         return noticeRepository.findByUsername(username);
     }
+
+    public void deleteNotice(Integer noticeId){
+        noticeRepository.deleteById(noticeId);
+    }
 }

@@ -32,7 +32,7 @@ public class MainController {
     @Autowired
     NoticeService noticeService;
 
-    @GetMapping("/")
+    @GetMapping("/main")
     public String index(Model model, @PageableDefault(page = 0, size = 5) Pageable pageable) {
 
         List<Board> boardList = boardService.selectBoardList();

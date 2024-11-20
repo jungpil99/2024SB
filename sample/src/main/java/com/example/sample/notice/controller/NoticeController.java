@@ -111,6 +111,10 @@ public class NoticeController {
             model.addAttribute("notice", notice);
         }
 
+        if(authInfo!=null && authInfo.getRole().equals("Admin")) {
+            model.addAttribute("Admin", authInfo.getRole());
+        }
+
         return "notice/noticeDetail";
     }
 
@@ -133,5 +137,28 @@ public class NoticeController {
         return "redirect:/notice/noticeList?query=" + encodedTitle;
     }
 
+    @PostMapping("/deleteNotice")
+    public String deleteNotice(@RequestParam("noticeId") Integer noticeId, RedirectAttributes redirectAttributes) throws Exception {
+
+        noticeService.deleteNotice(noticeId);
+        return "redirect:/notice/noticeList";
+    }
+
+    @PostMapping("/updateNotice")
+    public String updateNotice(@RequestParam("noticeId") Integer noticeId,
+                               @RequestParam("contents") String contents,
+                               RedirectAttributes redirectAttributes) throws Exception {
+
+        Optional<Notice> optionalNotice = noticeService.selectBoardDetail(noticeId);
+
+        if(optionalNotice.isPresent()) {
+            Notice notice = optionalNotice.get();
+
+            notice.setContents(contents);
+            noticeService.updateNotice(notice);
+        }
+
+        return "redirect:/notice/noticeDetail?noticeId=" + noticeId;
+    }
 
 }

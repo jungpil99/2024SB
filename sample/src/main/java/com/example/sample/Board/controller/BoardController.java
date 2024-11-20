@@ -120,7 +120,9 @@ public class BoardController {
         AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
         Optional<Board> optionalBoard = boardService.selectBoardDetail(boardIdx);
 
-//        List<Reply> reply = replyService.selectReply(pageable);
+        if(authInfo != null && authInfo.getName() != null && !authInfo.getName().isEmpty()) {
+            model.addAttribute("User", authInfo.getName());
+        }
 
         if (optionalBoard.isPresent()) {
 
@@ -129,7 +131,6 @@ public class BoardController {
             board.setHitCnt(board.getHitCnt() + 1);
             boardService.updateBoard(board);
 
-//            model.addAttribute("reply", reply);
             model.addAttribute("board", board); // Optional을 풀어 Board 객체만 전달
         } else {
             // 게시글을 찾을 수 없는 경우 처리 (예: 오류 페이지 표시)

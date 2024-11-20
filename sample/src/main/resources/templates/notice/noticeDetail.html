@@ -74,8 +74,10 @@
         <td colspan="3" th:text="${notice.title}"></td>
       </tr>
       <tr>
-        <td colspan="4" class="view_text"  th:text="${notice.contents }">
-          <!--						<textarea title="내용" id="contents" name="contents" th:text="${board.contents }"  readonly ></textarea>-->
+        <td colspan="4" class="view_text"  >
+          <textarea title="내용" id="contents" name="contents" th:text="${notice.contents }"
+                    th:attr="readonly=${Admin != 'Admin'} ? 'readonly' : null"
+                    readonly ></textarea>
         </td>
       </tr>
       </tbody>
@@ -93,10 +95,47 @@
   <!--			&lt;!&ndash;			<a th:each="list : ${board.fileList}" th:href="@{/board/downloadBoardFile.do(idx=${list.idx}, boardIdx=${list.boardIdx})}" th:text="|${list.originalFileName} (${list.fileSize} kb)|">&ndash;&gt;-->
   <!--			&lt;!&ndash;			</a>&ndash;&gt;-->
 
-  <a href="#" id="list" class="btn" onclick="window.history.back(); return false;">목록으로</a>
+  <a class="btn" href="#this" id="list">목록</a>
+  <a class="btn" href="#this" id="update" th:if="${Admin == 'Admin'}">수정</a>
+  <a class="btn" href="#this" id="delete" th:if="${Admin == 'Admin'}">삭제</a>
 
 </div>
 </div>
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#list").on("click", function () {
+      location.href = "/notice/noticeList";
+    });
+
+    $("#update").on("click", function () {
+      let frm = $("#frm")[0];
+      frm.action = "/notice/updateNotice";
+      let noticeId = $("#noticeId").val();
+      $('<input>').attr({
+        type: 'hidden',
+        name: 'noticeId',
+        value: noticeId
+      }).appendTo(frm);
+      frm.submit();
+    });
+
+    $("#delete").on("click", function() {
+
+      // 작성자와 같으면 삭제 진행
+      let frm = $("#frm")[0];
+      frm.action = "/notice/deleteNotice";
+      let noticeId = $("#noticeId").val(); // boardIdx 값을 가져옴
+      $('<input>').attr({
+        type: 'hidden',
+        name: 'noticeId',
+        value: noticeId
+      }).appendTo(frm);
+      frm.submit();
+    });
+
+  });
+</script>
 </body>
 </html>

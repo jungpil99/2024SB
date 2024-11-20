@@ -15,8 +15,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new AuthCheckInterceptor())
                 .addPathPatterns("/edit/**")
-                .addPathPatterns("/user/**");
-
+                .addPathPatterns("/user/**")
+                .addPathPatterns("/question/questionDetail");
     }
 
 }

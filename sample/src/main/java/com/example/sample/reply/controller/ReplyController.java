@@ -57,7 +57,7 @@ public class ReplyController {
     public String deleteReply(@RequestParam("boardIdx") Integer boardIdx,
                               @RequestParam("username") String username,
                               @RequestParam("replyId") Integer replyId,
-                              HttpSession session){
+                              HttpSession session,RedirectAttributes redirectAttributes){
         Optional<Board> optionalBoard = boardService.selectBoardDetail(boardIdx);
         AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 
@@ -70,7 +70,8 @@ public class ReplyController {
                 board.setReplyCnt(board.getReplyCnt() - 1);
                 boardService.updateBoard(board);
             }
-
+        }else {
+            redirectAttributes.addFlashAttribute("RoleError", "권한이 없습니다.");
         }
 
         return "redirect:/board/boardDetail?boardIdx=" + boardIdx;
@@ -81,7 +82,7 @@ public class ReplyController {
                               @RequestParam("username") String username,
                               @RequestParam("replyId") Integer replyId,
                               @RequestParam("replyContents") String replyContents,
-                              HttpSession session){
+                              HttpSession session,RedirectAttributes redirectAttributes){
 
         Optional<Reply> optionalReply = replyService.findReplyById(replyId);
         AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
@@ -91,6 +92,8 @@ public class ReplyController {
                 reply.setReplyContents(replyContents);  // replyContents 설정
                 replyRepository.save(reply);
             }
+        }else {
+            redirectAttributes.addFlashAttribute("RoleError", "권한이 없습니다.");
         }
 
 
