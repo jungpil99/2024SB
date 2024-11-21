@@ -1,9 +1,11 @@
 package com.example.sample.Board.entity;
 
+import com.example.sample.reply.entity.Reply;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -39,4 +41,7 @@ public class Board {
     private String deletedYn;
 
     private Integer replyCnt;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Reply> replies;
 }

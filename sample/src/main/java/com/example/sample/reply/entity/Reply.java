@@ -1,12 +1,10 @@
 package com.example.sample.reply.entity;
 
 
+import com.example.sample.Board.entity.Board;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
@@ -27,5 +25,7 @@ public class Reply {
 
     private String replyDate;
 
-    private Integer boardIdx;
+    @ManyToOne
+    @JoinColumn(name = "board_idx", nullable = false) // 외래키 설정
+    private Board board;
 }

@@ -113,7 +113,7 @@ public class BoardController {
     @GetMapping("/boardDetail")
     public String boardDetail(Model model, @RequestParam("boardIdx") Integer boardIdx, HttpSession session,
                               @PageableDefault(page = 0, size = 3) Pageable pageable) throws Exception{
-        Page<Reply> page = replyService.selectReply(pageable); // 페이지에 맞는 댓글만 가져옵니다.
+        Page<Reply> page = replyService.selectReply(pageable, boardIdx);
 
         model.addAttribute("list", page);  // 페이지 데이터를 전달
 

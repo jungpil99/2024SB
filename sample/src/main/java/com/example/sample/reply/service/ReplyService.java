@@ -1,5 +1,7 @@
 package com.example.sample.reply.service;
 
+import com.example.sample.Board.entity.Board;
+import com.example.sample.Board.service.BoardService;
 import com.example.sample.reply.entity.Reply;
 import com.example.sample.reply.repository.ReplyRepository;
 import com.example.sample.spring.AuthInfo;
@@ -20,9 +22,12 @@ public class ReplyService {
     @Autowired
     ReplyRepository replyRepository;
 
-    public Page<Reply> selectReply(Pageable pageable) {
-        return replyRepository.findAll(pageable);
-    };
+    @Autowired
+    BoardService boardService;
+
+    public Page<Reply> selectReply(Pageable pageable, Integer boardIdx) {
+        return replyRepository.findByBoard_BoardIdx(boardIdx, pageable);
+    }
 
     public List<Reply> selectReplyByUserName(String username) {
         return replyRepository.findByUsername(username);
@@ -33,10 +38,13 @@ public class ReplyService {
                           HttpSession session){
         AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 
+        Board board = boardService.selectBoardDetail(boardIdx)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+
         Reply reply = Reply.builder()
                 .username(authInfo.getName())
                 .replyContents(replyContents)
-                .boardIdx(boardIdx)
+                .board(board)
                 .replyDate(LocalDateTime.now().toString().substring(0, 10))
                 .build();
 

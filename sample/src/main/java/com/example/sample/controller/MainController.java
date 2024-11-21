@@ -32,6 +32,12 @@ public class MainController {
     @Autowired
     NoticeService noticeService;
 
+    @GetMapping("/")
+    public String root(Model model) {
+
+        return "redirect:/main";
+    }
+
     @GetMapping("/main")
     public String index(Model model, @PageableDefault(page = 0, size = 5) Pageable pageable) {
 
