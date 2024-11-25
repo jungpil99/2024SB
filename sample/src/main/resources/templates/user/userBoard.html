@@ -9,6 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" th:href="@{/css/board.css}" />
+
     <meta charset="UTF-8">
     <title>Title</title>
 
@@ -57,9 +59,9 @@
 
         <!-- 오른쪽 댓글 리스트 -->
         <div class="col-md-9">
-            <h3>작성 게시물</h3>
+            <h2>작성 게시물</h2>
             <!-- 댓글 리스트 테이블 -->
-            <table class="table table-bordered">
+            <table class="board_list">
                 <thead>
                 <tr>
                     <th width="15%">글 번호</th>

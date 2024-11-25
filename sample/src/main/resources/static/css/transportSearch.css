@@ -1,0 +1,244 @@
+/* 전체 페이지 스타일링 */
+body {
+    background-color: #f5f7fa;
+    color: #2c3e50;
+}
+
+/* 메인 컨테이너 스타일링 */
+.content.container {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* 검색 섹션 스타일링 */
+.col-md-4 {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+/* 검색 폼 스타일링 */
+.form-group {
+    margin-bottom: 1.8rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 0.8rem;
+    display: block;
+    font-size: 0.95rem;
+}
+
+.form-control {
+    border: 2px solid #edf2f7;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+.form-control:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+/* 검색 버튼 스타일링 */
+.btn-primary {
+    background-color: #4299e1;
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #3182ce;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.2);
+}
+
+/* 검색 결과 섹션 스타일링 */
+.col-md-8 {
+    padding: 0 1.5rem;
+}
+
+/* 테이블 스타일링 */
+.table {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: none;
+}
+
+.table td {
+    padding: 1.5rem;
+    border: none;
+    border-bottom: 1px solid #edf2f7;
+}
+
+/* 카드 스타일링 */
+.card-body {
+    background: #ffffff;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    padding: 1.5rem;
+}
+
+.card-body:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 아이콘 스타일링 */
+.fas.fa-plane { color: #4299e1; }
+.fas.fa-train { color: #48bb78; }
+.fas.fa-bus { color: #ed8936; }
+.fas.fa-hotel { color: #667eea; }
+.fas.fa-umbrella-beach { color: #f6ad55; }
+.fas.fa-home { color: #9f7aea; }
+
+.fas {
+    font-size: 1.5rem;
+    margin-right: 1.2rem;
+}
+
+/* 정보 텍스트 스타일링 */
+.card-body p {
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+/* 페이지네이션 스타일링 */
+.pagination {
+    margin-top: 2rem;
+    gap: 0.3rem;
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;
+    width: 100%;
+}
+
+/* 페이지네이션 컨테이너 스타일링 */
+nav[aria-label="Page navigation"] {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.page-link {
+    border: none;
+    padding: 0.8rem 1.2rem;
+    color: #4a5568;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.page-link:hover {
+    background-color: #edf2f7;
+    color: #2d3748;
+}
+
+.page-item.active .page-link {
+    background-color: #4299e1;
+    color: white;
+}
+
+/* 섹션 제목 스타일링 */
+h4 {
+    color: #2d3748;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #4299e1;
+    border-radius: 2px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .content.container {
+        padding: 1.5rem;
+    }
+
+    .col-md-4, .col-md-8 {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-body {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .fas {
+        margin: 0 0 1rem 0;
+    }
+
+    .mr-3 {
+        margin: 0.5rem 0;
+    }
+}
+
+/* 모달 스타일링 */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    border-bottom: 2px solid #edf2f7;
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-footer {
+    border-top: 2px solid #edf2f7;
+    padding: 1.5rem;
+}
+
+/* 선택 메뉴 커스터마이징 */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234a5568' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+/* 날짜 입력 필드 커스터마이징 */
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: transparent;
+    padding: 8px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}

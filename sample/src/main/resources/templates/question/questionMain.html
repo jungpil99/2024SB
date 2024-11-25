@@ -7,6 +7,8 @@
     <!-- Popper.js와 Bootstrap 순서로 로드 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/board.css}"/>
+
 
     <meta charset="UTF-8">
     <title>Title</title>
@@ -70,8 +72,8 @@
     </script>
 
     <div class="content container mt-5">
-        <h3>문의 내역</h3>
-        <table class="table table-bordered">
+        <h2>문의 내역</h2>
+        <table class="board_list">
             <thead>
             <tr>
                 <th scope="col" width="10%">글번호</th>
@@ -102,7 +104,7 @@
 
         <!-- 글 작성 버튼 -->
         <div class="d-flex justify-content-between align-items-center mb-3">
-        <a class="btn btn-primary" href="/question/questionWrite">글 작성</a>
+        <a class="btn btn-outline-primary" href="/question/questionWrite">글 작성</a>
         </div>
 
         <div th:if="${list != null and !#lists.isEmpty(list)}">

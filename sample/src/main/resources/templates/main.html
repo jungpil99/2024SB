@@ -93,7 +93,7 @@
             </div>
 
             <!-- 자유게시판 테이블 -->
-            <div class="col-md-6">
+            <div class="col-6">
                 <h4><a href="board/boardList">자유게시판</a></h4>
                 <table class="table table-bordered">
                     <tbody>
@@ -122,6 +122,7 @@
                     <tr th:each="review : ${review}">
                         <td class="title"><a href="/review/reviewDetail?reviewId=" th:attrappend="href=${review.reviewId}">
                             <span class="title-text" th:text="${review.title}"></span>
+                            <span class="reply-count" th:text="'(' + ${review.replyCnt} + ')'"></span>
                         </a></td>
                         <td th:text="${review.createdDatetime}"></td>
                         <!--                    <td th:text="${list.replyCnt}"></td>-->

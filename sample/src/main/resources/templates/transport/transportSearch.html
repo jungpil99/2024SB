@@ -2,7 +2,7 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <link href="/css/transport.css" rel="stylesheet">
+    <link href="/css/transportSearch.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -100,6 +100,7 @@
         <!-- 왼쪽: 날짜 선택 및 여행지 검색 -->
         <div class="col-md-4">
             <h4>상세 검색</h4>
+            <hr>
             <form method="get" th:action="@{/transport/transportSearch}">
 
                 <div class="form-group">
@@ -135,6 +136,7 @@
         <!-- 오른쪽: 검색된 여행지 정보 (테이블로 감싸기) -->
         <div class="col-md-8">
             <h4>검색 결과</h4>
+            <hr>
             <table class="table table-bordered">
                 <tbody>
                 <!-- 여행지 정보 (서버에서 데이터베이스 정보를 받아와서 표시) -->

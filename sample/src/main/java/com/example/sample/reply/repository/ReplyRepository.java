@@ -10,11 +10,17 @@ import java.util.Optional;
 
 public interface ReplyRepository extends JpaRepository<Reply, Integer> {
 
-    public void deleteById(Integer replyId);
+    void deleteById(Integer replyId);
 
     Page<Reply> findByBoard_BoardIdx(Integer boardIdx, Pageable pageable);
+
+    Page<Reply> findByReview_ReviewId(Integer reviewId, Pageable pageable);
 
     public List<Reply> findByUsername(String username);
 
     void deleteByUsername(String username);
+
+    Optional<Reply> findByReplyIdAndReviewReviewId(Integer replyId, Integer reviewId);
+
+    Optional<Reply> findByReplyIdAndBoardBoardIdx(Integer replyId, Integer boardIdx);
 }

@@ -35,6 +35,7 @@ public class ReviewService {
                 .contents(contents)
                 .deletedYn("N")
                 .hitCnt(0)
+                .replyCnt(0)
                 .username(authInfo.getName())
                 .build();
         reviewRepository.save(review);

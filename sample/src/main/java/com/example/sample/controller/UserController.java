@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -62,7 +63,6 @@ public class UserController {
             model.addAttribute("email", authInfo.getEmail());
             model.addAttribute("name", authInfo.getName());
         }
-
         return "/user/userMain";
     }
 
@@ -133,7 +133,8 @@ public class UserController {
     public String changePwd(@SessionAttribute("authInfo") AuthInfo authInfo, Model model,
                             @ModelAttribute("command") ChangePwdCommand pwdCmd,
                             Errors errors,
-                            HttpSession session) {
+                            HttpSession session,
+                            RedirectAttributes redirectAttributes) {
         new ChangePwdCommandValidator().validate(pwdCmd, errors);
         if (errors.hasErrors()) {
             return "/user/userMain";
@@ -143,18 +144,18 @@ public class UserController {
                     authInfo.getEmail(),
                     pwdCmd.getCurrentPassword(),
                     pwdCmd.getNewPassword());
-            model.addAttribute("id", authInfo.getId());
-            model.addAttribute("email", authInfo.getEmail());
-            model.addAttribute("name", authInfo.getName());
-            model.addAttribute("modal", "비밀번호를 변경했습니다");
-            return "/user/userMain";
+            redirectAttributes.addFlashAttribute("id", authInfo.getId());
+            redirectAttributes.addFlashAttribute("email", authInfo.getEmail());
+            redirectAttributes.addFlashAttribute("name", authInfo.getName());
+            redirectAttributes.addFlashAttribute("modal", "비밀번호를 변경했습니다");
+            return "redirect:/user/userMain";
 
         } catch (WrongIdPasswordException e) {
-            model.addAttribute("error", "현재 비밀번호가 일치하지 않습니다");
-            model.addAttribute("id", authInfo.getId());
-            model.addAttribute("email", authInfo.getEmail());
-            model.addAttribute("name", authInfo.getName());
-            return "/user/userMain";
+            redirectAttributes.addFlashAttribute("error", "현재 비밀번호가 일치하지 않습니다");
+            redirectAttributes.addFlashAttribute("id", authInfo.getId());
+            redirectAttributes.addFlashAttribute("email", authInfo.getEmail());
+            redirectAttributes.addFlashAttribute("name", authInfo.getName());
+            return "redirect:/user/userMain";
         }
 
     }

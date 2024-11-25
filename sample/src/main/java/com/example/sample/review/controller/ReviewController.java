@@ -1,6 +1,8 @@
 package com.example.sample.review.controller;
 
 import com.example.sample.Board.entity.Board;
+import com.example.sample.reply.entity.Reply;
+import com.example.sample.reply.service.ReplyService;
 import com.example.sample.review.entity.Review;
 import com.example.sample.review.sevice.ReviewService;
 import com.example.sample.spring.AuthInfo;
@@ -34,6 +36,9 @@ public class ReviewController {
 
     @Autowired
     ReviewService reviewService;
+
+    @Autowired
+    ReplyService replyService;
 
     @GetMapping("/reviewList")
     public String review(Model model, @RequestParam(value = "query", required = false) String query, @PageableDefault(page = 0, size = 10)
@@ -99,11 +104,21 @@ public class ReviewController {
     }
 
     @GetMapping("/reviewDetail")
-    public String reviewDetail(Model model, @RequestParam("reviewId") Integer reviewId, HttpSession session)
+    public String reviewDetail(Model model,
+                               @RequestParam("reviewId") Integer reviewId,
+                               HttpSession session,
+                               @PageableDefault(page = 0, size = 3) Pageable pageable) throws Exception
     {
+        Page<Reply> page = replyService.selectReviewReply(pageable, reviewId);
+
+        model.addAttribute("list", page);  // 페이지 데이터를 전달
+
         AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
         Optional<Review> optionalReview = reviewService.selectReviewDetail(reviewId);
 
+        if(authInfo != null && authInfo.getName() != null && !authInfo.getName().isEmpty()) {
+            model.addAttribute("User", authInfo.getName());
+        }
 //        List<Reply> reply = replyService.selectReply(pageable);
 
         if (optionalReview.isPresent()) {

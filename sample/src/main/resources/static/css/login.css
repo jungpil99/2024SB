@@ -1,88 +1,105 @@
 .login {
-	max-width: 400px; /* 최대 너비 */
-	margin: 50px auto; /* 중앙 정렬 및 위쪽 여백 */
-	padding: 20px; /* 내부 여백 */
-	background-color: #ffffff; /* 폼 배경색 */
-	border: 1px solid #ddd; /* 테두리 설정 */
-	border-radius: 5px; /* 모서리 둥글게 설정 */
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	max-width: 400px;
+	margin: 80px auto; /* 상단 여백 증가 */
+	padding: 30px; /* 내부 여백 증가 */
+	background-color: #ffffff;
+	border: none; /* 테두리 제거 */
+	border-radius: 12px; /* 모서리 더 둥글게 */
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* 그림자 효과 강화 */
 }
 
 h2 {
-	text-align: center; /* 제목 중앙 정렬 */
-	color: #333; /* 제목 색상 */
+	text-align: center;
+	color: #2c3e50; /* 제목 색상 변경 */
+	margin-bottom: 25px; /* 제목 아래 여백 추가 */
+	font-weight: 600;
 }
 
 .form-group {
-	margin-bottom: 15px; /* 각 입력 필드 간격 */
+	margin-bottom: 20px;
 }
 
 .form-control {
-	width: 100%; /* 입력 필드 너비 100% */
-	padding: 10px; /* 내부 여백 */
-	border: 1px solid #ccc; /* 테두리 색상 */
-	border-radius: 4px; /* 모서리 둥글게 설정 */
-	box-sizing: border-box; /* 박스 크기 조정 */
+	width: 100%;
+	padding: 12px 15px; /* 패딩 증가 */
+	border: 2px solid #e9ecef; /* 테두리 두께 증가 및 색상 변경 */
+	border-radius: 8px;
+	box-sizing: border-box;
+	transition: border-color 0.3s ease; /* 테두리 색상 변화 애니메이션 */
+	font-size: 15px;
+}
+
+.form-control:focus {
+	border-color: #4a90e2; /* 포커스시 테두리 색상 */
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1); /* 포커스시 그림자 효과 */
 }
 
 .btn {
-	width: 100%; /* 버튼 너비 100% */
-	padding: 10px; /* 내부 여백 */
-	background-color: #007bff; /* 버튼 배경색 */
-	color: #fff; /* 버튼 텍스트 색상 */
-	border: none; /* 기본 테두리 제거 */
-	border-radius: 4px; /* 버튼 모서리 둥글게 설정 */
-	font-size: 16px; /* 버튼 폰트 크기 설정 */
-	cursor: pointer; /* 커서 포인터로 변경 */
-	transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
+	width: 100%;
+	padding: 12px;
+	background-color: #4a90e2; /* 버튼 색상 변경 */
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 600; /* 폰트 두께 증가 */
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 .btn:hover {
-	background-color: #0056b3; /* 버튼 호버 색상 */
+	background-color: #357abd; /* 호버 색상 변경 */
+	transform: translateY(-1px); /* 호버시 살짝 위로 이동 */
 }
 
 .alert.alert-danger {
-	margin-top: 5px; /* 에러 메시지 위 여백 */
+	background-color: #fff2f2;
+	color: #dc3545;
+	padding: 10px;
+	border-radius: 6px;
+	margin-top: 8px;
+	font-size: 14px;
+	border: 1px solid #ffcdd2;
 }
 
-
-/* 로그인 성공 메시지 컨테이너 */
-.login-success {
-	text-align: center; /* 중앙 정렬 */
-	margin-top: 50px; /* 위 여백 */
+/* 체크박스 스타일링 */
+input[type="checkbox"] {
+	margin-right: 8px;
+	cursor: pointer;
 }
 
-/* 성공 메시지 스타일 */
-.login-success p {
-	font-size: 24px; /* 글자 크기 */
-	color: #333; /* 텍스트 색상 */
-	margin-bottom: 20px; /* 아래 여백 */
+/* 회원가입 링크 컨테이너 */
+p[style*="text-align: center"] {
+	margin-top: 20px !important;
+	padding-top: 15px;
+	border-top: 1px solid #eee;
 }
 
-/* 링크 버튼 스타일 */
-.login-success a {
-	display: inline-block; /* 인라인 블록으로 설정하여 패딩 적용 가능 */
-	margin: 20px; /* 주변 여백 */
-	padding: 10px 20px; /* 패딩 설정 */
-	background-color: #007bff; /* 버튼 배경색 */
-	color: white; /* 버튼 텍스트 색상 */
-	text-decoration: none; /* 링크의 밑줄 제거 */
-	border-radius: 5px; /* 모서리 둥글게 설정 */
-	transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
+/* 회원가입 링크 */
+p[style*="text-align: center"] a {
+	color: #4a90e2 !important;
+	font-weight: 500;
+	transition: color 0.3s ease;
 }
 
-/* 마우스를 올렸을 때 스타일 */
-.login-success a:hover {
-	background-color: #0056b3; /* 마우스를 올리면 버튼 배경색 변화 */
+p[style*="text-align: center"] a:hover {
+	color: #357abd !important;
+	text-decoration: underline !important;
+}
+
+/* 라벨 스타일링 */
+label {
+	display: block;
+	margin-bottom: 8px;
+	color: #495057;
+	font-weight: 500;
 }
 
 /* 반응형 처리 */
-@media (max-width: 768px) {
-	.login-success p {
-		font-size: 20px; /* 작은 화면에서 글자 크기 줄이기 */
-	}
-
-	.login-success a {
-		padding: 8px 16px; /* 작은 화면에서 버튼 패딩 조정 */
+@media (max-width: 480px) {
+	.login {
+		margin: 40px 20px;
+		padding: 20px;
 	}
 }

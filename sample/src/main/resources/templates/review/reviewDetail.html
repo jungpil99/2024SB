@@ -2,160 +2,270 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <!-- jQuery 먼저 로드 -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- jQuery 먼저 로드 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-  <!-- Popper.js와 Bootstrap 순서로 로드 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Popper.js와 Bootstrap 순서로 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-  <meta charset="UTF-8">
-  <title>게시글 상세 화면</title>
-  <link rel="stylesheet" th:href="@{/css/boardDetail.css}"/>
+    <meta charset="UTF-8">
+    <title>게시글 상세 화면</title>
+    <link rel="stylesheet" th:href="@{/css/boardDetail.css}"/>
 
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
 
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    .content {
-      flex: 1; /* 남는 공간을 차지하여 푸터를 아래로 밀어냄 */
-    }
+        .content {
+            flex: 1; /* 남는 공간을 차지하여 푸터를 아래로 밀어냄 */
+        }
 
-    footer {
-      background-color: #f8f9fa;
-      padding: 2rem 0;
-      border-top: 1px solid #e9ecef;
-      text-align: center;
-    }
-  </style>
+        footer {
+            background-color: #f8f9fa;
+            padding: 2rem 0;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+        }
+    </style>
 
 </head>
 
 <body onLoad="javascript:pop()">
 <div class="wrapper">
-<div th:replace="/fragments/nav.html :: fragment-nav"></div>
-<div th:replace="/fragments/header.html :: fragment-header"></div>
+    <div th:replace="/fragments/nav.html :: fragment-nav"></div>
+    <div th:replace="/fragments/header.html :: fragment-header"></div>
 
-<div th:if="${errorMessages != null}" class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="errorModalLabel">알림</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p th:text="${errorMessages}"></p> <!-- 에러 메시지 표시 -->
-      </div>
-      <div class="modal-footer">
-        <a href="/review/reviewList" class="btn btn-secondary">닫기</a>
-      </div>
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="errorModal" role="dialog"
+         tabindex="-1" th:if="${errorMessages != null}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">알림</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p th:text="${errorMessages}"></p> <!-- 에러 메시지 표시 -->
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary" href="/review/reviewList">닫기</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-  $(document).ready(function() {
-    if ('${errorMessages}' != '') {
-      $('#errorModal').modal('show');
-    }
-  });
-</script>
+    <script>
+        $(document).ready(function () {
+            if ('${errorMessages}' != '') {
+                $('#errorModal').modal('show');
+            }
+        });
+    </script>
 
-<div class="content container">
-  <h2>게시글 상세 화면</h2>
-  <form id="frm" method="post">
-    <table class="board_detail">
-      <colgroup>
-        <col width="15%"/>
-        <col width="35%"/>
-        <col width="15%"/>
-        <col width="35%"/>
-      </colgroup>
-      <caption>게시글 상세내용</caption>
-      <tbody>
-      <tr>
-        <th scope="row">글 번호</th>
-        <td th:text="${review.reviewId }"></td>
-        <th scope="row">조회수</th>
-        <td th:text="${review.hitCnt }"></td>
-      </tr>
-      <tr>
-        <th scope="row">작성자</th>
-        <td th:text="${review.username }"></td>
-        <th scope="row">작성일</th>
-        <td th:text="${review.createdDatetime }"></td>
-      </tr>
-      <tr>
-      <tr>
-        <th scope="row">제목</th>
-        <td colspan="3" th:text="${review.title}"></td>
-      </tr>
-      <tr>
-        <td colspan="4" class="view_text"  th:text="${review.contents }">
-          <!--						<textarea title="내용" id="contents" name="contents" th:text="${board.contents }"  readonly ></textarea>-->
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <input type="hidden" id="reviewId" name="reviewId" th:value="${review.reviewId }">
-  </form>
+    <div class="content container">
+        <h2>게시글 상세 화면</h2>
+        <form id="frm" method="post">
+            <table class="board_detail">
+                <colgroup>
+                    <col width="15%"/>
+                    <col width="35%"/>
+                    <col width="15%"/>
+                    <col width="35%"/>
+                </colgroup>
+                <caption>게시글 상세내용</caption>
+                <tbody>
+                <tr>
+                    <th scope="row">글 번호</th>
+                    <td th:text="${review.reviewId }"></td>
+                    <th scope="row">조회수</th>
+                    <td th:text="${review.hitCnt }"></td>
+                </tr>
+                <tr>
+                    <th scope="row">작성자</th>
+                    <td th:text="${review.username }"></td>
+                    <th scope="row">작성일</th>
+                    <td th:text="${review.createdDatetime }"></td>
+                </tr>
+                <tr>
+                <tr>
+                    <th scope="row">제목</th>
+                    <td colspan="3" th:text="${review.title}"></td>
+                </tr>
+                <tr>
+                    <td class="view_text" colspan="4">
+                        						<textarea title="내용" id="contents" name="contents" th:text="${review.contents }"  readonly ></textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <input id="reviewId" name="reviewId" th:value="${review.reviewId }" type="hidden">
+        </form>
 
-  <!--		<div class="file_list">-->
-  <!--			<th:block th:each="list : ${board.fileList}">-->
-  <!--				<p>-->
-  <!--					<a th:href="@{/board/downloadBoardFile.do(idx=${list.idx}, boardIdx=${list.boardIdx})}" th:text="|${list.originalFileName} (${list.fileSize} kb) [${list.storedFilePath}]|"></a>-->
-  <!--					<img th:src="${list.storedFilePath}" />-->
-  <!--				</p>-->
-  <!--			</th:block>-->
-  <!--			&lt;!&ndash;			<a th:each="list : ${board.fileList}" th:href="@{/board/downloadBoardFile.do(idx=${list.idx}, boardIdx=${list.boardIdx})}" th:text="|${list.originalFileName} (${list.fileSize} kb)|">&ndash;&gt;-->
-  <!--			&lt;!&ndash;			</a>&ndash;&gt;-->
+        <!--		<div class="file_list">-->
+        <!--			<th:block th:each="list : ${board.fileList}">-->
+        <!--				<p>-->
+        <!--					<a th:href="@{/board/downloadBoardFile.do(idx=${list.idx}, boardIdx=${list.boardIdx})}" th:text="|${list.originalFileName} (${list.fileSize} kb) [${list.storedFilePath}]|"></a>-->
+        <!--					<img th:src="${list.storedFilePath}" />-->
+        <!--				</p>-->
+        <!--			</th:block>-->
+        <!--			&lt;!&ndash;			<a th:each="list : ${board.fileList}" th:href="@{/board/downloadBoardFile.do(idx=${list.idx}, boardIdx=${list.boardIdx})}" th:text="|${list.originalFileName} (${list.fileSize} kb)|">&ndash;&gt;-->
+        <!--			&lt;!&ndash;			</a>&ndash;&gt;-->
 
-  <a href="#this" id="list" class="btn">목록으로</a>
-  <a href="#this" id="edit" class="btn">수정하기</a>
-  <a href="#this" id="delete" class="btn">삭제하기</a>
+        <a class="btn" href="#this" id="list">목록으로</a>
+        <a class="btn" href="#this" id="edit">수정하기</a>
+        <a class="btn" href="#this" id="delete">삭제하기</a>
 
-</div>
+    </div>
+
+    <div class="reply_container">
+        <form id="reply" method="post" th:action="@{/addReviewReply}">
+            <input id="reviewId_reply" name="reviewId" th:value="${review.reviewId }" type="hidden">
+            <label for="replyContents">댓글 작성</label>
+            <textarea id="replyContents" name="replyContents"></textarea>
+            <input class="btn" type="submit" value="제출">
+        </form>
+        <hr>
+        <h5>댓글 목록</h5>
+        <div class="reply_contents" th:each="reply : ${list.content}">
+            <table>
+                <tr>
+                    <td th:text="${reply.username}"></td>
+                    <td>|</td>
+                    <td>
+                        <form method="post" style="display:inline;" th:action="@{/editReviewReply}">
+                            <label id="edit_reply">
+                            <textarea name="replyContents" readonly
+                                      th:attr="readonly=${User != null && User.equals(reply.username) ? null : 'readonly'}"
+                                      th:text="${reply.replyContents}"></textarea>
+                            </label>
+                            <input name="reviewId" th:value="${review.reviewId}" type="hidden"/>
+                            <input name="username" th:value="${reply.username}" type="hidden"/>
+                            <input name="replyId" th:value="${reply.replyId}" type="hidden"/>
+                            <input class="btn" type="submit" value="수정">
+                        </form>
+                        <form method="post" style="display:inline;" th:action="@{/delReviewReply}">
+                            <input name="reviewId" th:value="${review.reviewId}" type="hidden"/>
+                            <input name="username" th:value="${reply.username}" type="hidden"/>
+                            <input name="replyId" th:value="${reply.replyId}" type="hidden"/>
+                            <input class="btn btn-danger" type="submit" value="삭제">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div th:if="${!list.isEmpty()}">
+            <nav aria-label="Page navigation"
+                 th:with="pageNumber = ${list.pageable.pageNumber},
+            pageSize = ${list.pageable.pageSize}, totalPages = ${list.totalPages},
+            startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
+            tempEndPage = ${startPage + pageSize - 1}, endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
+                <ul class="pagination">
+                    <!-- 처음으로 이동 -->
+                    <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/review/reviewDetail(page=0, reviewId=${review.reviewId})}">
+                            <span>&laquo;</span>
+                            <span class="sr-only">First</span>
+                        </a>
+                    </li>
+
+                    <!-- 이전으로 이동 -->
+                    <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
+                        <a aria-label="Previous"
+                           class="page-link"
+                           th:href="${pageNumber == 0} ? '#' : @{/review/reviewDetail(page=${pageNumber - 1}, reviewId=${review.reviewId})}">
+                            <span aria-hidden="true">&lt;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+
+                    <!-- 특정 페이지로 이동 -->
+                    <li class="page-item"
+                        th:classappend="${page == pageNumber + 1} ? 'active'"
+                        th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                        <a class="page-link"
+                           th:href="@{/review/reviewDetail(page=${page - 1}, reviewId=${review.reviewId})}"
+                           th:text="${page}"></a>
+                    </li>
+
+                    <!-- 다음으로 이동 -->
+                    <li class="page-item" th:classappend="${pageNumber == totalPages - 1} ? 'disabled'">
+                        <a aria-label="Next"
+                           class="page-link"
+                           th:href="${pageNumber == totalPages - 1} ? '#' : @{/review/reviewDetail(page=${pageNumber + 1}, reviewId=${review.reviewId})}">
+                            <span aria-hidden="true">&gt;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+
+                    <!-- 마지막으로 이동 -->
+                    <li class="page-item" th:classappend="${pageNumber == totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/review/reviewDetail(page=${totalPages - 1}, reviewId=${review.reviewId})}">
+                            <span>&raquo;</span>
+                            <span class="sr-only">Last</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>
 
 
 <script type="text/javascript">
-  $(document).ready(function() {
+    $(document).ready(function () {
 
-    $("#list").on("click", function() {
-      location.href = "/review/reviewList";
+        $("#list").on("click", function () {
+            location.href = "/review/reviewList";
+        });
+
+        $("#edit").on("click", function () {
+            let reviewId = $("#reviewId").val();
+            location.href = "/review/reviewUpdate?reviewId=" + reviewId;
+        });
+
+        $("#delete").on("click", function () {
+
+            // 작성자와 같으면 삭제 진행
+            let frm = $("#frm")[0];
+            frm.action = "/review/deleteReview";
+            let reviewId = $("#reviewId").val(); // boardIdx 값을 가져옴
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'reviewId', // boardIdx를 name으로 지정
+                value: reviewId  // boardIdx 값 넣기
+            }).appendTo(frm);
+            frm.submit();
+        });
+
+        $('#replyContents').keydown(function(e) {
+            if (e.keyCode === 13) {
+                e.stopPropagation();
+            }
+        });
+
+        // document 레벨에서 엔터키 감지
+        $(document).keydown(function(e) {
+            if (e.keyCode === 13 && !$(e.target).is('textarea')) {
+                e.preventDefault();
+                if ($('#replyContents').val().trim() !== '') {
+                    $('#reply').submit();
+                }
+            }
+        });
+
     });
-
-    $("#edit").on("click", function() {
-      var reviewId = $("#reviewId").val();
-      location.href = "/review/reviewUpdate?reviewId=" + reviewId;
-    });
-
-    $("#delete").on("click", function() {
-
-      // 작성자와 같으면 삭제 진행
-      var frm = $("#frm")[0];
-      frm.action = "/review/deleteReview";
-      var boardIdx = $("#reviewId").val(); // boardIdx 값을 가져옴
-      $('<input>').attr({
-        type: 'hidden',
-        name: 'reviewId', // boardIdx를 name으로 지정
-        value: reviewId  // boardIdx 값 넣기
-      }).appendTo(frm);
-      frm.submit();
-    });
-
-  });
 </script>
 </body>
 </html>

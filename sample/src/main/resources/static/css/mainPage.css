@@ -1,171 +1,168 @@
 @charset "UTF-8";
+
+/* 전체 페이지 스타일 */
 .main--page--div {
-	width: 1142px;
-	margin-bottom: 50px;
-	display: flex;
-	justify-content: flex-start;
-	flex-direction: column;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto 50px;
+	padding: 0 20px;
+	font-family: 'Noto Sans KR', sans-serif;
 }
 
-.main--page--img {
-	width: 1500px;
+/* 캐러셀 이미지 스타일 수정 */
+.carousel-item img {
+	width: 100%;
 	height: 500px;
-	margin-bottom: 40px;
-}
-
-.material-symbols-rounded {
-	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 40;
-}
-
-.material--bold {
-	font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 48 !important;
-}
-
-.material--small {
-	font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 40 !important;
-}
-
-.main--page--notice {
-	margin-right: 120px;
-}
-
-.main--page--notice tr td:first-of-type {
-	width: 450px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: inline-block;
-	margin-right: 20px;
-}
-
-.main--page--notice tr td a {
-	font-size: 19px;
-}
-
-.main--page--calander tr td:first-of-type {
-	padding-right: 28px;
-	text-align: right;
-}
-
-.main--page--calander tr td:last-of-type {
-	font-size: 19px;
-	max-width: 400px;
-	min-width: 341px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.main--page--split {
-	height: 2px;
-	width: 100%;
-	background-color: #3c668a;
-	margin-bottom: 10px;
-}
-
-.main--page--div h3 a {
-	font-weight: 600;
-	color: #132A50;
-}
-
-.main--page--profile {
-	min-width: 300px;
-	padding: 20px;
-	display: flex;
-	flex-direction: column;
-	border: 1px solid #E0E0E0;
+	object-fit: cover;
 	border-radius: 20px;
-	justify-content: flex-start;
-	align-items: flex-start;
-	margin-left: 60px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.main--page--profile table {
-	margin-bottom: 25px;
-}
-
-.main--page--profile table td {
-	color: #585858;
-	height: 27px;
-}
-
-.main--page--profile table tr td:first-of-type {
-	padding-right: 20px;
-}
-
-.profile--button--div {
-	width: 100%;
-	display: flex;
-	justify-content: space-around;
-}
-
-.profile--button--div button {
-	background-color: #98afcb;
-	padding: 3px 13px 4px;
+/* 게시판 섹션 스타일 */
+.table {
 	border: none;
-	border-radius: 5px;
-	color: white;
+	box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+	border-radius: 15px;
+	overflow: hidden;
+	table-layout: fixed;
+	width: 100%;
+	margin-top: 20px;
+	background: #fff;
 }
 
-.main--page--info {
-	border: 1px solid #E0E0E0;
-	border-radius: 20px;
-	margin-left: 60px;
-	padding: 20px;
+/* 게시판 제목 스타일 */
+h4 {
+	margin: 30px 0 15px 0;
+	position: relative;
+	display: inline-block;
 }
 
-.main--page--info p {
-	margin: 10px 0 0 0;
-	color: #585858;
+h4 a {
+	color: #1a73e8;
+	font-weight: 700;
+	font-size: 1.3rem;
+	text-decoration: none;
+	transition: color 0.3s;
+	padding-left: 25px;
 }
 
-.main--page--info p a {
-	color: #1d57a3;
-	font-weight: 600;
+h4 a:before {
+	content: '✈️';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
-footer {
-	margin: 80px 0 30px 0;
+h4 a:hover {
+	color: #1557b0;
+}
+
+/* 테이블 셀 스타일 */
+.table td {
+	border: none;
+	padding: 15px 20px;
+	border-bottom: 1px solid #f0f0f0;
+	vertical-align: middle;
+}
+
+.table td.title {
+	width: 65%;
+	padding-right: 15px;
+}
+
+/* 게시글 링크 스타일 */
+.title a {
+	color: #424242;
+	text-decoration: none;
+	transition: all 0.2s;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 5px 0;
+}
+
+.title a:hover {
+	color: #1a73e8;
+	transform: translateX(5px);
+}
+
+/* 제목 텍스트 스타일 */
+.title-text {
+	font-size: 0.95rem;
+	max-width: calc(100% - 45px);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+}
+
+/* 답글 수 스타일 */
+.reply-count {
+	background: #e8f0fe;
+	color: #1a73e8;
+	padding: 3px 8px;
+	border-radius: 12px;
+	font-size: 0.75rem;
+	font-weight: 500;
+	min-width: 35px;
+	display: inline-block;
 	text-align: center;
 }
 
-/* 테이블 설정: 외부 테두리 제거 */
-.table {
-	border-collapse: collapse;  /* 셀 경계를 합침 */
-	border-spacing: 0;           /* 셀 간 간격 제거 */
-	border: none !important;     /* 테이블 외부 테두리 제거 */
-}
-
-/* 셀 간 경계선 설정 */
-.table td, .table th {
-	border: 1px solid #ddd;     /* 셀들 간의 경계선 설정 */
-	padding: 12px;               /* 셀 내부 padding */
-}
-
-/* 제목에 대해 가장 넓은 공간을 차지하게 설정 */
-.title-text {
-	display: inline-block;
+/* 날짜 스타일 */
+.table td:last-child {
+	width: 35%;
+	color: #757575;
+	font-size: 0.85rem;
+	text-align: right;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	width: 60%;
-	vertical-align: middle;  /* 텍스트의 수직 정렬을 맞춤 */
+	padding-left: 10px;
 }
 
-/* 작성일은 그 다음으로 넓은 공간을 차지하게 설정 */
-.table td:nth-child(2) {
-	width: 30%;                   /* 작성자 열의 너비를 30%로 설정 */
+/* 구분선 스타일 */
+hr {
+	border: none;
+	height: 2px;
+	background: linear-gradient(to right, #1a73e8, #e8f0fe);
+	margin: 40px 0;
+	opacity: 0.7;
 }
 
-/* 작성자는 제일 작은 칸을 차지하도록 설정 */
-.table td:nth-child(3) {
-	width: 10%;                   /* 작성자 열의 너비를 10%로 설정 */
+/* 테이블 호버 효과 */
+.table tr {
+	transition: all 0.3s ease;
 }
 
-/* '답글 개수'의 폰트 크기와 색상 설정 */
-.reply-count {
-	font-size: 0.8rem;  /* 폰트 크기 작은 설정 */
-	color: #6c757d;
-	vertical-align: middle;  /* 텍스트의 수직 정렬을 맞춤 */
-	margin-left: 5px;  /* 제목과 답글 수 간격 추가 */
+.table tr:hover {
+	background-color: #f8f9fc;
+	transform: translateX(5px);
 }
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.carousel-item img {
+		height: 300px;
+		border-radius: 15px;
+	}
+
+	.main--page--div {
+		padding: 0 15px;
+	}
+
+	.table td.title {
+		width: 60%;
+	}
+
+	.table td:last-child {
+		width: 40%;
+	}
+
+	h4 a {
+		font-size: 1.1rem;
+	}
+}
+
+/* 푸터 스타일 */

@@ -1,9 +1,11 @@
 package com.example.sample.review.entity;
 
+import com.example.sample.reply.entity.Reply;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,5 +39,10 @@ public class Review {
 
     @Column(columnDefinition = "varchar(2) default 'N'")
     private String deletedYn;
+
+    private Integer replyCnt;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Reply> replies;
 
 }

@@ -1,8 +1,11 @@
+/* 기본 스타일 */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f6f9;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
 }
 
+/* 아이콘 컨테이너 */
 .icon-container {
     display: flex;
     justify-content: center;
@@ -22,6 +25,7 @@ body {
     color: #007bff;
 }
 
+/* 정보 컨테이너 */
 .info-container {
     display: none;
     text-align: center;
@@ -48,4 +52,372 @@ body {
     font-size: 18px;
     line-height: 1.6;
     margin-top: 10px;
+}
+
+/* 카드 스타일링 */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px;  /* 이미지 높이 고정 */
+    object-fit: cover;  /* 이미지 비율 유지하면서 영역 채우기 */
+}
+
+.card-body {
+    flex: 1;  /* 남은 공간 채우기 */
+    display: flex;
+    flex-direction: column;
+    height: 250px;  /* 카드 본문 높이 고정 */
+    overflow: hidden;  /* 내용이 넘칠 경우 숨김 */
+}
+
+.card-body p {
+    margin: 0.5rem 0;  /* 문단 간격 조정 */
+    word-break: break-all;  /* 긴 텍스트 줄바꿈 */
+}
+
+
+
+.card-title {
+    margin-bottom: 1rem;
+}
+
+.mr-3 {
+    margin-right: 0 !important;  /* Bootstrap의 margin 재정의 */
+}
+
+/* 폼 스타일링 */
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    padding: 0.75rem;
+    transition: border-color 0.2s ease;
+    height: 45px !important;
+}
+
+.form-control:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+/* select 요소 특별 스타일링 */
+select.form-control {
+    padding: 8px 35px 8px 12px;
+    background-position: right 12px center;
+    min-height: 45px;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 12px;
+    font-size: 14px;
+}
+
+/* select 옵션 스타일링 */
+select.form-control option {
+    padding: 12px;
+    min-height: 45px;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+/* 버튼 스타일링 */
+.btn-primary {
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    background-color: #357abd;
+    transform: translateY(-2px);
+}
+
+/* 아이콘 스타일링 */
+.fas {
+    color: #4a90e2;
+    margin-right: 10px;
+}
+
+/* 페이지네이션 스타일링 */
+.pagination {
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.page-item.active .page-link {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+}
+
+.page-link {
+    color: #4a90e2;
+    border-radius: 5px;
+    margin: 0 3px;
+}
+
+/* 검색 결과 테이블 스타일링 */
+.table {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.table td {
+    vertical-align: middle;
+    border: none;
+    padding: 1rem;
+}
+
+/* 메인 페이지 캐러셀 스타일링 */
+#carouselContainer {
+    margin-bottom: 50px;
+}
+
+#carouselExampleIndicators {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+#carouselExampleIndicators .carousel-item {
+    height: 500px;
+}
+
+#carouselExampleIndicators .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 검색 섹션 스타일링 */
+.col-md-4 h4, .col-md-8 h4 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+/* hr 태그 스타일링 */
+.col-md-4 hr {
+    margin: 15px 0 30px 0; /* 하단 마진 증가 */
+    border: 0;
+    height: 2px;
+    background: linear-gradient(to right, #4a90e2, transparent);
+    opacity: 0.3;
+}
+
+/* 검색 폼 컨테이너 스타일링 */
+.col-md-4 form {
+    background: white;
+    padding: 35px; /* 패딩 증가 */
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* 검색 페이지 폼 그룹 간격 조정 */
+.col-md-4 .form-group {
+    margin-bottom: 35px; /* 간격 증가 */
+}
+
+/* 검색 페이지 마지막 폼 그룹 마진 제거 */
+.col-md-4 .form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* 검색 버튼 위 여백 조정 */
+.col-md-4 .form-group .btn-primary {
+    margin-top: 35px; /* 여백 증가 */
+}
+
+/* 라벨 스타일링 */
+.form-group label {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-top: 12px; /* 라벨 아래 여백 증가 */
+    font-size: 0.95rem;
+    display: block;
+    height: 21px;
+    line-height: 21px;
+}
+
+/* 메인 페이지 검색 폼 스타일링 */
+.content .row {
+    display: flex;
+    align-items: flex-end;
+    margin: 0 -10px;
+}
+
+.content .row > div {
+    padding: 0 10px;
+}
+
+.content .row .form-group {
+    margin-bottom: 0;
+}
+
+.content .row .btn-primary {
+    margin-top: 29px;
+    width: 100%;
+}
+
+.content .row .col-md-2,
+.content .row .col-md-8,
+.content .row .col-md-4 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* 모달 스타일링 */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+.modal-header {
+    background-color: #4a90e2;
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 1rem 1.5rem;
+}
+
+.modal-footer {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 1rem 1.5rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 992px) {
+    #carouselExampleIndicators .carousel-item {
+        height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 150px;
+    }
+
+    .carousel-item img {
+        height: 300px;
+    }
+
+    .col-md-4 form {
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .col-md-4 h4, .col-md-8 h4 {
+        font-size: 1.5rem;
+    }
+
+    .content .row {
+        flex-direction: column;
+    }
+
+    .content .row > div {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .content .row .btn-primary {
+        margin-top: 0;
+    }
+}
+
+/* 검색 섹션 스타일링 */
+.col-md-4 h4, .col-md-8 h4 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+/* hr 태그 스타일링 - 왼쪽과 오른쪽 섹션 모두에 적용 */
+.col-md-4 hr, .col-md-8 hr {
+    margin: 15px 0 30px 0;
+    border: 0;
+    height: 2px;
+    background: linear-gradient(to right, #4a90e2, transparent);
+    opacity: 0.3;
+}
+
+/* 검색 폼 컨테이너 스타일링 */
+.col-md-4 form {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* 검색 결과 테이블 스타일링 */
+.col-md-8 .table {
+    margin-top: 20px;  /* 테이블 상단 여백 추가 */
+}
+
+       /* 검색 폼 스타일링 */
+.search-form-row {
+    display: flex;
+    align-items: flex-end;  /* 하단 정렬 유지 */
+}
+
+.search-form-row .form-group {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.search-form-row .col-md-2,
+.search-form-row .col-md-8 {
+    padding: 0 10px;
+}
+
+.search-form-row label {
+    margin-bottom: 8px;
+    display: block;
+}
+
+.search-form-row .btn {
+    height: calc(1.5em + .75rem + 2px);  /* Bootstrap의 form-control 높이와 동일하게 설정 */
+    width: 100%;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+    .search-form-row {
+        flex-direction: column;
+    }
+
+    .search-form-row .col-md-2,
+    .search-form-row .col-md-8 {
+        width: 100%;
+        margin-bottom: 15px;
+    }
 }

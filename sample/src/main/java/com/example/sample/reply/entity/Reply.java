@@ -2,6 +2,7 @@ package com.example.sample.reply.entity;
 
 
 import com.example.sample.Board.entity.Board;
+import com.example.sample.review.entity.Review;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,10 @@ public class Reply {
     private String replyDate;
 
     @ManyToOne
-    @JoinColumn(name = "board_idx", nullable = false) // 외래키 설정
+    @JoinColumn(name = "board_idx", nullable = true) // 외래키 설정
     private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "review_id", nullable = true) // 외래키 설정
+    private Review review;
 }

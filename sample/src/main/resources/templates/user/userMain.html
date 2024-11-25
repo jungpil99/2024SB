@@ -8,6 +8,7 @@
   <!-- Popper.js와 Bootstrap 순서로 로드 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/board.css}" />
 
   <meta charset="UTF-8">
   <title>Title</title>
@@ -93,12 +94,15 @@
           </div>
       </div>
 
-      <script>
+      <script th:inline="javascript">
           $(document).ready(function () {
-              if ('${modal}' != '') {
+              var modal = /*[[${modal}]]*/ null;
+              var error = /*[[${error}]]*/ null;
+
+              if (modal) {
                   $('#successModal').modal('show');
               }
-              if ('${error}' != '') {
+              if (error) {
                   $('#errorModal').modal('show');
               }
           });
@@ -121,15 +125,17 @@
           <input type="text" class="form-control" id="name" th:value="${name}" readonly>
         </div>
 
-        <div class="form-group">
-          <label for="currentPassword">현재 비밀번호</label>
-          <input type="password" class="form-control" id="currentPassword" placeholder="현재 비밀번호 입력" name="currentPassword" >
-        </div>
+          <div class="form-group">
+              <label for="currentPassword">현재 비밀번호</label>
+              <input type="password" class="form-control" id="currentPassword"
+                     name="currentPassword" required minlength="4">
+          </div>
 
-        <div class="form-group">
-          <label for="newPassword">새로운 비밀번호</label>
-          <input type="password" class="form-control" id="newPassword" placeholder="새로운 비밀번호 입력" name="newPassword">
-        </div>
+          <div class="form-group">
+              <label for="newPassword">새로운 비밀번호</label>
+              <input type="password" class="form-control" id="newPassword"
+                     name="newPassword" required minlength="4">
+          </div>
 
         <button type="submit" class="btn btn-primary">비밀번호 변경</button>
       </form>
