@@ -17,6 +17,8 @@ import com.example.sample.spring.Member;
 import com.example.sample.spring.WrongIdPasswordException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -29,11 +31,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -67,13 +71,24 @@ public class UserController {
     }
 
     @GetMapping("/userList")
-    public String userList(@SessionAttribute("authInfo") AuthInfo authInfo, Model model, HttpServletRequest request) {
+    public String userList(@SessionAttribute("authInfo") AuthInfo authInfo, Model model, HttpServletRequest request,
+                           @PageableDefault(page = 0, size = 10) Pageable pageable) {
 //        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
         List<Member> members = memberRepository.findAll();
 
         boolean isAdmin = (boolean) request.getAttribute("isAdmin");
 
         if (isAdmin) {
+
+            members.sort(Comparator.comparing(Member::getId).reversed());
+
+            final int start = (int) pageable.getOffset();
+            final int end = Math.min(start + pageable.getPageSize(), members.size());
+
+            log.info("start: {}, end: {}", start, end);
+            final Page<Member> page = new PageImpl<>(members.subList(start, end), pageable, members.size());
+
+            model.addAttribute("page", page);
             model.addAttribute("isAdmin", isAdmin);
             model.addAttribute("user", members);
         }
@@ -82,7 +97,8 @@ public class UserController {
     }
 
     @GetMapping("/userReply")
-    public String userReply(@SessionAttribute("authInfo") AuthInfo authInfo, Model model, HttpServletRequest request) {
+    public String userReply(@SessionAttribute("authInfo") AuthInfo authInfo, Model model, HttpServletRequest request,
+                            @PageableDefault(page = 0, size = 10) Pageable pageable) {
 //        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
 
         boolean isAdmin = (boolean) request.getAttribute("isAdmin");
@@ -94,15 +110,26 @@ public class UserController {
         if (authInfo != null) {
             List<Reply> reply = replyService.selectReplyByUserName(authInfo.getName());
             if (!reply.isEmpty()) {
-                model.addAttribute("reply", reply);
+
+                reply.sort(Comparator.comparing(Reply::getReplyId).reversed());
+
+                final int start = (int) pageable.getOffset();
+                final int end = Math.min(start + pageable.getPageSize(), reply.size());
+
+                log.info("start: {}, end: {}", start, end);
+                final Page<Reply> page = new PageImpl<>(reply.subList(start, end), pageable, reply.size());
+
+                model.addAttribute("page", page);
             }
+            model.addAttribute("reply", reply);
         }
 
         return "/user/userReply";
     }
 
     @GetMapping("/userBoard")
-    public String userBoard(@SessionAttribute("authInfo") AuthInfo authInfo, Model model, HttpServletRequest request) {
+    public String userBoard(@SessionAttribute("authInfo") AuthInfo authInfo, Model model, HttpServletRequest request,
+                            @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
         boolean isAdmin = (boolean) request.getAttribute("isAdmin");
 
@@ -123,7 +150,15 @@ public class UserController {
             List<Review> reviews = reviewService.selectListUserName(authInfo.getName());
             reviews.forEach(review -> posts.add(new PostDto(review.getReviewId(), review.getTitle(), review.getCreatedDatetime(), "review")));
 
-            model.addAttribute("posts", posts);
+            posts.sort(Comparator.comparing(PostDto::getPostId).reversed());
+
+            final int start = (int) pageable.getOffset();
+            final int end = Math.min(start + pageable.getPageSize(), posts.size());
+
+            log.info("start: {}, end: {}", start, end);
+            final Page<PostDto> page = new PageImpl<>(posts.subList(start, end), pageable, posts.size());
+
+            model.addAttribute("posts", page);
         }
 
         return "/user/userBoard";

@@ -1,7 +1,9 @@
 package com.example.sample.Board.controller;
 
 import com.example.sample.Board.entity.Board;
+import com.example.sample.Board.entity.BoardView;
 import com.example.sample.Board.repository.BoardRepository;
+import com.example.sample.Board.repository.BoardViewRepository;
 import com.example.sample.Board.service.BoardService;
 import com.example.sample.reply.entity.Reply;
 import com.example.sample.reply.repository.ReplyRepository;
@@ -42,6 +44,8 @@ public class BoardController {
     @Autowired
     ReplyService replyService;
 
+    @Autowired
+    BoardViewRepository boardViewRepository;
 
 
 //    게시판 조회
@@ -122,18 +126,26 @@ public class BoardController {
 
         if(authInfo != null && authInfo.getName() != null && !authInfo.getName().isEmpty()) {
             model.addAttribute("User", authInfo.getName());
+
+            // 로그인한 사용자의 게시글 조회 여부 확인
+            boolean hasViewed = boardViewRepository.existsByUsernameAndBoardIdx(
+                    authInfo.getName(), boardIdx);
+
+            if (!hasViewed) {
+                // 처음 조회하는 경우에만 조회수 증가
+                Board board = optionalBoard.get();
+                board.setHitCnt(board.getHitCnt() + 1);
+                boardService.updateBoard(board);
+
+                // 조회 기록 저장
+                BoardView boardView = new BoardView(authInfo.getName(), boardIdx, LocalDateTime.now().toString().substring(0, 10));
+                boardViewRepository.save(boardView);
+            }
         }
 
         if (optionalBoard.isPresent()) {
-
-            Board board = optionalBoard.get();
-
-            board.setHitCnt(board.getHitCnt() + 1);
-            boardService.updateBoard(board);
-
-            model.addAttribute("board", board); // Optional을 풀어 Board 객체만 전달
+            model.addAttribute("board", optionalBoard.get());
         } else {
-            // 게시글을 찾을 수 없는 경우 처리 (예: 오류 페이지 표시)
             model.addAttribute("error", "게시글을 찾을 수 없습니다.");
             return "error";
         }

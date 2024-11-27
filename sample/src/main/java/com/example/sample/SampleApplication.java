@@ -7,12 +7,14 @@ import com.example.sample.spring.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
 @SpringBootApplication
+@EnableScheduling
 public class SampleApplication {
 
     @Autowired

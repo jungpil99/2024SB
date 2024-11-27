@@ -4,6 +4,8 @@ import com.example.sample.Board.entity.Board;
 import com.example.sample.reply.entity.Reply;
 import com.example.sample.reply.service.ReplyService;
 import com.example.sample.review.entity.Review;
+import com.example.sample.review.entity.ReviewView;
+import com.example.sample.review.repository.ReviewViewRepository;
 import com.example.sample.review.sevice.ReviewService;
 import com.example.sample.spring.AuthInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,9 @@ public class ReviewController {
 
     @Autowired
     ReplyService replyService;
+
+    @Autowired
+    ReviewViewRepository viewRepository;
 
     @GetMapping("/reviewList")
     public String review(Model model, @RequestParam(value = "query", required = false) String query, @PageableDefault(page = 0, size = 10)
@@ -118,18 +123,22 @@ public class ReviewController {
 
         if(authInfo != null && authInfo.getName() != null && !authInfo.getName().isEmpty()) {
             model.addAttribute("User", authInfo.getName());
+
+            boolean hasViewd = viewRepository.existsByUsernameAndReviewId(authInfo.getName(), reviewId);
+
+            if(!hasViewd) {
+                Review review = optionalReview.get();
+
+                review.setHitCnt(review.getHitCnt() + 1);
+                reviewService.updateReview(review);
+
+                ReviewView reviewView = new ReviewView(authInfo.getName(),reviewId,LocalDateTime.now().toString().substring(0,10));
+                viewRepository.save(reviewView);
+            }
         }
-//        List<Reply> reply = replyService.selectReply(pageable);
 
         if (optionalReview.isPresent()) {
-
-            Review review = optionalReview.get();
-
-            review.setHitCnt(review.getHitCnt() + 1);
-            reviewService.updateReview(review);
-
-//            model.addAttribute("reply", reply);
-            model.addAttribute("review", review); // Optional을 풀어 Board 객체만 전달
+            model.addAttribute("review", optionalReview.get()); // Optional을 풀어 Board 객체만 전달
         } else {
             // 게시글을 찾을 수 없는 경우 처리 (예: 오류 페이지 표시)
             model.addAttribute("error", "게시글을 찾을 수 없습니다.");

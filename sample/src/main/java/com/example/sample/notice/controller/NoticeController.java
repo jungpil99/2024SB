@@ -2,7 +2,9 @@ package com.example.sample.notice.controller;
 
 import com.example.sample.Board.entity.Board;
 import com.example.sample.notice.entity.Notice;
+import com.example.sample.notice.entity.NoticeView;
 import com.example.sample.notice.repository.NoticeRepository;
+import com.example.sample.notice.repository.NoticeViewRepository;
 import com.example.sample.notice.service.NoticeService;
 import com.example.sample.spring.AuthInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +39,9 @@ public class NoticeController {
 
     @Autowired
     NoticeRepository noticeRepository;
+
+    @Autowired
+    NoticeViewRepository noticeViewRepository;
 
     @GetMapping("/noticeList")
     public String notice(Model model, @RequestParam(value = "query", required = false) String query, @PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception {
@@ -101,19 +107,28 @@ public class NoticeController {
         AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
         Optional<Notice> optionalNotice = noticeService.selectBoardDetail(noticeId);
 
-        if(optionalNotice.isPresent()) {
-            Notice notice = optionalNotice.get();
+        Notice notice = optionalNotice.get();
+        model.addAttribute("notice", notice);
+        if(authInfo != null && authInfo.getName() != null && !authInfo.getName().isEmpty()){
+            boolean hasViewed = noticeViewRepository.existsByUsernameAndNoticeId(authInfo.getName(), noticeId);
 
-            notice.setHitCnt(notice.getHitCnt() + 1);
-            noticeService.updateNotice(notice);
 
+            if(!hasViewed) {
+                //처음 조회하는 경우 조회수 증가
+                notice.setHitCnt(notice.getHitCnt() + 1);
+                noticeService.updateNotice(notice);
 
-            model.addAttribute("notice", notice);
+                //조회 기록 저장
+                NoticeView noticeView = new NoticeView(authInfo.getName(), noticeId, LocalDateTime.now().toString().substring(0, 10));
+                noticeViewRepository.save(noticeView);
+            }
+
         }
 
         if(authInfo!=null && authInfo.getRole().equals("Admin")) {
             model.addAttribute("Admin", authInfo.getRole());
         }
+
 
         return "notice/noticeDetail";
     }
