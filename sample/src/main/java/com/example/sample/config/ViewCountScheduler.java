@@ -25,7 +25,7 @@ public class ViewCountScheduler {
     ReviewViewRepository reviewViewRepository;
 
     @Transactional
-    @Scheduled(cron = "0 0 0 * * *")// 매일 자정(00:00)에 실행
+    @Scheduled(cron = "0 0 14 * * *")// 매일 자정(00:00)에 실행
     public void resetViewCount() {
         // 어제 날짜 구하기
         String todayDate = LocalDateTime.now().toString().substring(0, 10);

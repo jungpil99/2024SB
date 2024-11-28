@@ -59,15 +59,21 @@
     <!-- 오른쪽 폼 -->
     <div class="col-md-9">
       <h3>회원 탈퇴</h3>
-      <form>
-        <!-- 비밀번호 입력창 -->
+      <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+      </div>
+      <form id="initialForm">
         <div class="form-group">
           <label for="password">비밀번호</label>
-          <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력하세요" name="password">
+          <input type="password" class="form-control" id="password"
+                 placeholder="비밀번호를 입력하세요" name="password" required>
+          <div class="invalid-feedback">
+            비밀번호를 입력해주세요.
+          </div>
         </div>
 
         <!-- 탈퇴 버튼 -->
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal">
+        <button type="button" class="btn btn-danger" onclick="validateAndShowModal()">
           탈퇴
         </button>
       </form>
@@ -99,14 +105,35 @@
 </div>
 </div>
 <script>
-  // 모달이 열릴 때 비밀번호를 hidden 필드에 설정
-  $('#confirmModal').on('show.bs.modal', function (event) {
-    var password = $('#password').val();  // 입력한 비밀번호 가져오기
-    $('#hiddenPassword').val(password);   // hidden 필드에 비밀번호 설정
-  });
-  function submitForm() {
-    document.getElementById("deleteForm").submit();
+  function validateAndShowModal() {
+    const passwordInput = document.getElementById('password');
+
+    if (!passwordInput.value.trim()) {
+      passwordInput.classList.add('is-invalid');
+      return false;
+    }
+
+    passwordInput.classList.remove('is-invalid');
+    $('#confirmModal').modal('show');
+    $('#hiddenPassword').val(passwordInput.value);
   }
+
+  // 비밀번호 입력 필드에 대한 이벤트 리스너
+  document.getElementById('password').addEventListener('input', function() {
+    if (this.value.trim()) {
+      this.classList.remove('is-invalid');
+    } else {
+      this.classList.add('is-invalid');
+    }
+  });
+
+  // Enter 키 이벤트 처리
+  document.getElementById('password').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      validateAndShowModal();
+    }
+  });
 </script>
 
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>

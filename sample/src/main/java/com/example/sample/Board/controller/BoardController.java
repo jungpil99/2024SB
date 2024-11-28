@@ -1,6 +1,7 @@
 package com.example.sample.Board.controller;
 
 import com.example.sample.Board.entity.Board;
+import com.example.sample.Board.entity.BoardUserReaction;
 import com.example.sample.Board.entity.BoardView;
 import com.example.sample.Board.repository.BoardRepository;
 import com.example.sample.Board.repository.BoardViewRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -239,5 +238,100 @@ public class BoardController {
         }
 
         return "redirect:/board/boardDetail?boardIdx=" + boardIdx;
+    }
+
+    @PostMapping("/boardLike")
+    @ResponseBody
+    public ResponseEntity<?> handleLike(@RequestParam Integer boardIdx,
+                                        @RequestParam boolean isLike,
+                                        HttpSession session) {
+        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
+        if (authInfo == null) {
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "로그인이 필요한 서비스입니다.",
+                    "redirectUrl", "/login"
+            ));
+        }
+
+        try {
+            Optional<Board> optionalBoard = boardService.selectBoardDetail(boardIdx);
+            if (!optionalBoard.isPresent()) {
+                return ResponseEntity.ok(Map.of(
+                        "success", false,
+                        "message", "게시글을 찾을 수 없습니다."
+                ));
+            }
+
+            Board board = optionalBoard.get();
+            String username = authInfo.getName();
+
+            // 현재 사용자의 반응 찾기
+            Optional<BoardUserReaction> existingReaction = board.getReactions().stream()
+                    .filter(r -> r.getUsername().equals(username))
+                    .findFirst();
+
+            if (isLike) {
+                if (existingReaction.isPresent()) {
+                    if ("LIKE".equals(existingReaction.get().getReactionType())) {
+                        // 좋아요 취소
+                        board.getReactions().remove(existingReaction.get());
+                        board.setLikeCnt(board.getLikeCnt() - 1);
+                    } else {
+                        // 싫어요를 좋아요로 변경
+                        existingReaction.get().setReactionType("LIKE");
+                        board.setDislikeCnt(board.getDislikeCnt() - 1);
+                        board.setLikeCnt(board.getLikeCnt() + 1);
+                    }
+                } else {
+                    // 새로운 좋아요 추가
+                    BoardUserReaction reaction = new BoardUserReaction();
+                    reaction.setBoard(board);
+                    reaction.setUsername(username);
+                    reaction.setReactionType("LIKE");
+                    reaction.setCreatedAt(LocalDateTime.now());
+                    board.getReactions().add(reaction);
+                    board.setLikeCnt(board.getLikeCnt() + 1);
+                }
+            } else {
+                if (existingReaction.isPresent()) {
+                    if ("DISLIKE".equals(existingReaction.get().getReactionType())) {
+                        // 싫어요 취소
+                        board.getReactions().remove(existingReaction.get());
+                        board.setDislikeCnt(board.getDislikeCnt() - 1);
+                    } else {
+                        // 좋아요를 싫어요로 변경
+                        existingReaction.get().setReactionType("DISLIKE");
+                        board.setLikeCnt(board.getLikeCnt() - 1);
+                        board.setDislikeCnt(board.getDislikeCnt() + 1);
+                    }
+                } else {
+                    // 새로운 싫어요 추가
+                    BoardUserReaction reaction = new BoardUserReaction();
+                    reaction.setBoard(board);
+                    reaction.setUsername(username);
+                    reaction.setReactionType("DISLIKE");
+                    reaction.setCreatedAt(LocalDateTime.now());
+                    board.getReactions().add(reaction);
+                    board.setDislikeCnt(board.getDislikeCnt() + 1);
+                }
+            }
+
+            boardService.updateBoard(board);
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "userLiked", board.hasUserLiked(username),
+                    "userDisliked", board.hasUserDisliked(username),
+                    "likeCount", board.getLikeCnt(),
+                    "dislikeCount", board.getDislikeCnt()
+            ));
+
+        } catch (Exception e) {
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "처리 중 오류가 발생했습니다."
+            ));
+        }
     }
 }

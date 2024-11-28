@@ -1,6 +1,7 @@
 package com.example.sample.spring;
 
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,11 @@ public class MemberRegisterService {
 		if (member != null) {
 			throw new DuplicateMemberException("dup email " + req.getEmail());
 		}
+
+		String hashedPassword = BCrypt.hashpw(req.getPassword(), BCrypt.gensalt());
+
 		Member newMember = new Member(
-				req.getEmail(), req.getName(), req.getPassword(),
+				req.getEmail(), req.getName(), hashedPassword,
 				LocalDateTime.now(), "User");
 		memberDao.insert(newMember);
 		return newMember.getId();

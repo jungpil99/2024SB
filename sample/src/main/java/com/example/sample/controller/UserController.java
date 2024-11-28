@@ -11,11 +11,9 @@ import com.example.sample.reply.service.ReplyService;
 import com.example.sample.repository.MemberRepository;
 import com.example.sample.review.entity.Review;
 import com.example.sample.review.sevice.ReviewService;
-import com.example.sample.spring.AuthInfo;
-import com.example.sample.spring.ChangePasswordService;
-import com.example.sample.spring.Member;
-import com.example.sample.spring.WrongIdPasswordException;
+import com.example.sample.spring.*;
 import lombok.extern.slf4j.Slf4j;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -57,6 +55,9 @@ public class UserController {
 
     @Autowired
     ChangePasswordService changePasswordService;
+
+    @Autowired
+    MemberDao memberDao;
 
     @GetMapping("/userMain")
     public String user(@SessionAttribute("authInfo") AuthInfo authInfo, Model model) {
@@ -209,17 +210,25 @@ public class UserController {
 
     @PostMapping("/userDelete")
     @Transactional
-    public String userDelete(@SessionAttribute("authInfo") AuthInfo authInfo, Model model,
-                             @RequestParam("password") String password, HttpSession session) {
+    public String userDelete(@SessionAttribute("authInfo") AuthInfo authInfo,
+                             @RequestParam("password") String password,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
 
-        if(authInfo != null && authInfo.getPassword().equals(password)) {
+        Member member = memberDao.selectByEmail(authInfo.getEmail());
+        if(member != null && BCrypt.checkpw(password, member.getPassword())) {
             boardService.deleteBoardByUsername(authInfo.getName());
             reviewService.deleteByUsername(authInfo.getName());
             replyService.deleteByUserName(authInfo.getName());
             memberRepository.deleteByEmail(authInfo.getEmail());
             session.invalidate();
+            return "redirect:/main";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/user/userDelete";
         }
 
-        return "redirect:/user/userMain";
     }
+
+
 }

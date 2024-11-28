@@ -5,7 +5,9 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -44,4 +46,27 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Reply> replies;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer likeCnt = 0;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer dislikeCnt = 0;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BoardUserReaction> reactions = new HashSet<>();
+
+    // 좋아요/싫어요 확인 메서드
+    public boolean hasUserLiked(String username) {
+        return reactions.stream()
+                .anyMatch(r -> r.getUsername().equals(username)
+                        && "LIKE".equals(r.getReactionType()));
+    }
+
+    public boolean hasUserDisliked(String username) {
+        return reactions.stream()
+                .anyMatch(r -> r.getUsername().equals(username)
+                        && "DISLIKE".equals(r.getReactionType()));
+    }
 }
+

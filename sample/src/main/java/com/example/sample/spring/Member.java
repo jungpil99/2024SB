@@ -2,6 +2,7 @@ package com.example.sample.spring;
 
 
 import lombok.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -52,13 +53,13 @@ public class Member {
     }
 
     public void changePassword(String oldPassword, String newPassword) {
-        if (!password.equals(oldPassword))
+        if (!BCrypt.checkpw(oldPassword, this.password))
             throw new WrongIdPasswordException();
-        this.password = newPassword;
+        this.password = BCrypt.hashpw(newPassword, BCrypt.gensalt());
     }
 
     public boolean matchPassword(String password) {
-        return this.password.equals(password);
+        return BCrypt.checkpw(password, this.password);
     }
 
 }

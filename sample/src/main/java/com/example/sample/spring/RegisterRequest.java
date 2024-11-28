@@ -1,10 +1,7 @@
 package com.example.sample.spring;
 
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class RegisterRequest {
 
@@ -12,7 +9,7 @@ public class RegisterRequest {
 	@Email
 	private String email;
 
-	@Size(min = 6)
+	@Size(min = 8, message = "비밀번호는 최소 8자 이상이어야 합니다")
 	private String password;
 	@NotEmpty
 	private String confirmPassword;
